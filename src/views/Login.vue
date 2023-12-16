@@ -31,35 +31,35 @@
 
 </template>
 <script>
+// eslint-disable-next-line no-unused-vars
 import Mock from "mockjs";
 import Cookie from "js-cookie";
 import {getMenu, register} from "../api";
 
 export default {
-  // eslint-disable-next-line vue/multi-word-component-names
-  name: 'Login',
   data() {
     return {
       currentTime: new Date().toLocaleString(),
       form: {
-        username: "",
-        password: "",
+        username: "admin",
+        password: "admin",
       },
       rules: {
-        username: [{required: true, trigger: "blur", message: "请输入您的账号"},
+        username: [{required: true, trigger: "blur", message: "请输入账号"},
           {
             min: 3,
             max: 10,
             message: '长度在 3 到 10 个字符',
             trigger: 'blur',
           },],
-        password: [{required: true, trigger: "blur", message: "请输入您的密码"},
+        password: [{required: true, trigger: "blur", message: "请输入密码"},
           {
-            min: 6,
+            min: 3,
             max: 15,
-            message: '长度在 6 到 15 个字符',
+            message: '密码不少于6位',
             trigger: 'blur',
-          },],
+          }
+        ],
       },
     };
   },
@@ -72,7 +72,7 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           getMenu(this.form).then(({data}) => {
-            if (data.code === 200) {
+            if (data.code === 20000) {
               // token信息存入cookie用于不同页面间的通信
               Cookie.set("token", data.data.token);
               // 获取菜单的数据，存入store中
