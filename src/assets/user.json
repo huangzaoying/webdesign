@@ -1,0 +1,43 @@
+[
+    {
+        "path": "/home",
+        "name": "home",
+        "label": "首页",
+        "icon": "s-home",
+        "url": "Home.vue"
+    },
+    {
+        "path": "/info",
+        "name": "info",
+        "label": "个人信息",
+        "icon": "video-play",
+        "url": "Info.vue"
+    },
+    {
+        "path": "/user",
+        "name": "user",
+        "label": "用户管理",
+        "icon": "user",
+        "url": "User.vue"
+    },
+    {
+        "label": "寻去处",
+        "icon": "location",
+        "children": [
+            {
+                "path": "/page1",
+                "name": "query",
+                "label": "寻去处-查询",
+                "icon": "setting",
+                "url": "PageOne.vue"
+            },
+            {
+                "path": "/page2",
+                "name": "submit",
+                "label": "寻去处-发布",
+                "icon": "setting",
+                "url": "PageTwo.vue"
+            }
+        ]
+    }
+]

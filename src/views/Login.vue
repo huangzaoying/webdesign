@@ -20,13 +20,52 @@
         ></el-input>
       </el-form-item>
       <el-form-item class="button-group">
-        <el-button @click="submit" type="primary"> 登录 </el-button>
-        <el-button type="info" @click="handleRegister"> 注册 </el-button>
+        <el-button @click="login" type="primary"> 登录</el-button>
+        <el-button type="info" @click="handleRegister"> 注册</el-button>
       </el-form-item>
     </el-form>
     <div class="el-login-footer">
       <span v-text="currentTime"></span>
     </div>
+    <el-dialog title="注册" :visible.sync="dialogVisible" width="40%">
+      <el-form :model="userInfo" label-width="80px" :rules="registerRules">
+        <el-form-item label="用户名" prop="userName">
+          <el-input v-model="userInfo.userName"></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="passWord">
+          <el-input type="password" v-model="userInfo.passWord"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="userInfo.name"></el-input>
+        </el-form-item>
+        <el-form-item label="选择证件类型" prop="cardType">
+          <el-select v-model="userInfo.cardType" placeholder="证件类型">
+            <el-option label="身份证" value="0"></el-option>
+            <el-option label="其他" value="1"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="证件号码" prop="cardId">
+          <el-input v-model="userInfo.cardId"></el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="phoneNumber">
+          <el-input v-model="userInfo.phoneNumber"></el-input>
+        </el-form-item>
+        <el-form-item label="注册城市" prop="registerCity">
+          <el-cascader
+              placeholder="请选择地区"
+              :options="options"
+              v-model="selectedLocation"
+          ></el-cascader>
+        </el-form-item>
+        <el-form-item label="简介" prop="bio">
+          <el-input v-model="userInfo.bio"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="register">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 
 </template>
@@ -34,11 +73,26 @@
 // eslint-disable-next-line no-unused-vars
 import Mock from "mockjs";
 import Cookie from "js-cookie";
-import {getMenu, register} from "../api";
+import userMenu from "@/assets/user.json";
+import {login, register,getMenu} from "../api";
+import provincesData from '@/assets/city.json';
 
 export default {
   data() {
     return {
+      dialogVisible: false,
+      userInfo: {
+        userName: "",
+        passWord: "",
+        name: "",
+        cardType: "", // 0 身份证 1 其他
+        cardId: "",
+        phoneNumber: "",
+        registerCity: "",
+        bio: "暂时没有更多了",
+      },
+      selectedLocation: [],
+      options: provincesData,
       currentTime: new Date().toLocaleString(),
       form: {
         username: "admin",
@@ -61,24 +115,53 @@ export default {
           }
         ],
       },
+      registerRules: {
+        userName: [
+          {required: true, message: '请输入用户名', trigger: 'blur'},
+          {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+        ],
+        passWord: [
+          {required: true, message: '请输入密码', trigger: 'blur'},
+          {min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur'}
+        ],
+        name: [
+          {required: true, message: '请输入姓名', trigger: 'blur'},
+        ],
+        cardType: [
+          {required: true, message: '请选择证件类型', trigger: 'change'},
+        ],
+        cardId: [
+          {required: true, message: '请输入证件号码', trigger: 'blur'},
+        ],
+        phoneNumber: [
+          {required: true, message: '请输入手机号码', trigger: 'blur'},
+          {pattern: /^1[34578]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur'}
+        ],
+        registerCity: [
+          {required: true, message: '请选择注册城市', trigger: 'change'},
+        ],
+        bio: [
+          {required: false, message: '请输入个人简介', trigger: 'blur'},
+        ],
+      },
     };
+  },
+  watch: {
+    selectedLocation: function (newVal) {
+      this.userInfo.registerCity = newVal.join('-');
+    }
   },
   methods: {
     // 登录
-    submit() {
-      // // token信息
-      // const token = Mock.Random.guid()
-      // 校验通过
+    login() {
       this.$refs.form.validate((valid) => {
         if (valid) {
           getMenu(this.form).then(({data}) => {
+          // login(this.form).then(({data}) => {
             if (data.code === 200) {
-              // token信息存入cookie用于不同页面间的通信
-              Cookie.set("token", data.data.token);
-              // 获取菜单的数据，存入store中
-              this.$store.commit("setMenu", data.data.menu);
+              Cookie.set("token", data.data.token); // token信息存入cookie用于不同页面间的通信              
+              this.$store.commit("setMenu", userMenu);// 获取菜单的数据，存入store中
               this.$store.commit("addMenu", this.$router);
-              // 跳转到首页
               this.$message.success('登录成功!');
               this.$router.push("/home");
             } else {
@@ -89,9 +172,12 @@ export default {
       });
     },
     handleRegister() {
+      this.dialogVisible = true;
+    },
+    register() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          getRegist(this.form).then((data) => {
+          register(this.form).then((data) => {
             console.log(data)
             if (data.code === 200) {
               this.$message.success(data.data.message)
@@ -116,6 +202,7 @@ export default {
   color: #333;
   font-size: 24px;
 }
+
 .login-page {
   height: 100vh;
   background-image: url('~@/assets/images/login-background.jpg');
@@ -146,11 +233,13 @@ export default {
   .el-input {
     width: 198px;
   }
+
   .button-group {
     display: flex;
     justify-content: center;
   }
 }
+
 .el-login-footer {
   height: 40px;
   line-height: 40px;
@@ -159,7 +248,7 @@ export default {
   width: 100%;
   text-align: center;
   color: #fff;
-  font-family: Arial,serif;
+  font-family: Arial, serif;
   font-size: 15px;
   letter-spacing: 1px;
 }

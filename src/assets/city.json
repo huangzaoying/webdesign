@@ -1,0 +1,1568 @@
+[
+  {
+    "value": "Heilongjiang",
+    "label": "黑龙江",
+    "children": [
+      {
+        "value": "Qitaihe",
+        "label": "七台河"
+      },
+      {
+        "value": "Yichun",
+        "label": "伊春"
+      },
+      {
+        "value": "Jiamusi",
+        "label": "佳木斯"
+      },
+      {
+        "value": "Shuangyashan",
+        "label": "双鸭山"
+      },
+      {
+        "value": "Harbin",
+        "label": "哈尔滨"
+      },
+      {
+        "value": "Daxinganling",
+        "label": "大兴安岭"
+      },
+      {
+        "value": "Daqing",
+        "label": "大庆"
+      },
+      {
+        "value": "Mudanjiang",
+        "label": "牡丹江"
+      },
+      {
+        "value": "Suihua",
+        "label": "绥化"
+      },
+      {
+        "value": "Jixi",
+        "label": "鸡西"
+      },
+      {
+        "value": "Hegang",
+        "label": "鹤岗"
+      },
+      {
+        "value": "Heihe",
+        "label": "黑河"
+      },
+      {
+        "value": "Qiqihar",
+        "label": "齐齐哈尔"
+      }
+    ]
+  },
+  {
+    "value": "Hainan",
+    "label": "海南",
+    "children": [
+      {
+        "value": "Sanya",
+        "label": "三亚"
+      },
+      {
+        "value": "Danzhou",
+        "label": "儋州"
+      },
+      {
+        "value": "Haikou",
+        "label": "海口"
+      }
+    ]
+  },
+  {
+    "value": "Fujian",
+    "label": "福建",
+    "children": [
+      {
+        "value": "Sanming",
+        "label": "三明"
+      },
+      {
+        "value": "Nanping",
+        "label": "南平"
+      },
+      {
+        "value": "Xiamen",
+        "label": "厦门"
+      },
+      {
+        "value": "Ningde",
+        "label": "宁德"
+      },
+      {
+        "value": "Quanzhou",
+        "label": "泉州"
+      },
+      {
+        "value": "Zhangzhou",
+        "label": "漳州"
+      },
+      {
+        "value": "Fuzhou",
+        "label": "福州"
+      },
+      {
+        "value": "Putian",
+        "label": "莆田"
+      },
+      {
+        "value": "Longyan",
+        "label": "龙岩"
+      }
+    ]
+  },
+  {
+    "value": "Henan",
+    "label": "河南",
+    "children": [
+      {
+        "value": "Sanmenxia",
+        "label": "三门峡"
+      },
+      {
+        "value": "Xinyang",
+        "label": "信阳"
+      },
+      {
+        "value": "Nanyang",
+        "label": "南阳"
+      },
+      {
+        "value": "Zhoukou",
+        "label": "周口"
+      },
+      {
+        "value": "Shangqiu",
+        "label": "商丘"
+      },
+      {
+        "value": "Anyang",
+        "label": "安阳"
+      },
+      {
+        "value": "Pingdingshan",
+        "label": "平顶山"
+      },
+      {
+        "value": "Kaifeng",
+        "label": "开封"
+      },
+      {
+        "value": "Xinxiang",
+        "label": "新乡"
+      },
+      {
+        "value": "Luoyang",
+        "label": "洛阳"
+      },
+      {
+        "value": "Luohe",
+        "label": "漯河"
+      },
+      {
+        "value": "Puyang",
+        "label": "濮阳"
+      },
+      {
+        "value": "Jiaozuo",
+        "label": "焦作"
+      },
+      {
+        "value": "Xuchang",
+        "label": "许昌"
+      },
+      {
+        "value": "Zhengzhou",
+        "label": "郑州"
+      },
+      {
+        "value": "Zhumadian",
+        "label": "驻马店"
+      },
+      {
+        "value": "Hebi",
+        "label": "鹤壁"
+      }
+    ]
+  },
+  {
+    "value": "Shanghai",
+    "label": "上海",
+    "children": [
+      {
+        "value": "Shanghai",
+        "label": "上海"
+      }
+    ]
+  },
+  {
+    "value": "Jiangxi",
+    "label": "江西",
+    "children": [
+      {
+        "value": "Shangrao",
+        "label": "上饶"
+      },
+      {
+        "value": "Jiujiang",
+        "label": "九江"
+      },
+      {
+        "value": "Nanchang",
+        "label": "南昌"
+      },
+      {
+        "value": "Ji'an",
+        "label": "吉安"
+      },
+      {
+        "value": "Yichun",
+        "label": "宜春"
+      },
+      {
+        "value": "Fuzhou",
+        "label": "抚州"
+      },
+      {
+        "value": "Xinyu",
+        "label": "新余"
+      },
+      {
+        "value": "Jingdezhen",
+        "label": "景德镇"
+      },
+      {
+        "value": "Pingxiang",
+        "label": "萍乡"
+      },
+      {
+        "value": "Ganzhou",
+        "label": "赣州"
+      },
+      {
+        "value": "Yingtan",
+        "label": "鹰潭"
+      }
+    ]
+  },
+  {
+    "value": "Guangdong",
+    "label": "广东",
+    "children": [
+      {
+        "value": "Dongguan",
+        "label": "东莞"
+      },
+      {
+        "value": "Zhongshan",
+        "label": "中山"
+      },
+      {
+        "value": "Yunfu",
+        "label": "云浮"
+      },
+      {
+        "value": "Foshan",
+        "label": "佛山"
+      },
+      {
+        "value": "Guangzhou",
+        "label": "广州"
+      },
+      {
+        "value": "Huizhou",
+        "label": "惠州"
+      },
+      {
+        "value": "Jieyang",
+        "label": "揭阳"
+      },
+      {
+        "value": "Meizhou",
+        "label": "梅州"
+      },
+      {
+        "value": "Shantou",
+        "label": "汕头"
+      },
+      {
+        "value": "Shanwei",
+        "label": "汕尾"
+      },
+      {
+        "value": "Jiangmen",
+        "label": "江门"
+      },
+      {
+        "value": "Heyuan",
+        "label": "河源"
+      },
+      {
+        "value": "Shenzhen",
+        "label": "深圳"
+      },
+      {
+        "value": "Qingyuan",
+        "label": "清远"
+      },
+      {
+        "value": "Zhanjiang",
+        "label": "湛江"
+      },
+      {
+        "value": "Chaozhou",
+        "label": "潮州"
+      },
+      {
+        "value": "Zhuhai",
+        "label": "珠海"
+      },
+      {
+        "value": "Zhaoqing",
+        "label": "肇庆"
+      },
+      {
+        "value": "Maoming",
+        "label": "茂名"
+      },
+      {
+        "value": "Yangjiang",
+        "label": "阳江"
+      },
+      {
+        "value": "Shaoguan",
+        "label": "韶关"
+      }
+    ]
+  },
+  {
+    "value": "Shandong",
+    "label": "山东",
+    "children": [
+      {
+        "value": "Dongying",
+        "label": "东营"
+      },
+      {
+        "value": "Linyi",
+        "label": "临沂"
+      },
+      {
+        "value": "Weihai",
+        "label": "威海"
+      },
+      {
+        "value": "Dezhou",
+        "label": "德州"
+      },
+      {
+        "value": "Rizhao",
+        "label": "日照"
+      },
+      {
+        "value": "Zaozhuang",
+        "label": "枣庄"
+      },
+      {
+        "value": "Tai'an",
+        "label": "泰安"
+      },
+      {
+        "value": "Jinan",
+        "label": "济南"
+      },
+      {
+        "value": "Jining",
+        "label": "济宁"
+      },
+      {
+        "value": "Zibo",
+        "label": "淄博"
+      },
+      {
+        "value": "Binzhou",
+        "label": "滨州"
+      },
+      {
+        "value": "Weifang",
+        "label": "潍坊"
+      },
+      {
+        "value": "Yantai",
+        "label": "烟台"
+      },
+      {
+        "value": "Liaocheng",
+        "label": "聊城"
+      },
+      {
+        "value": "Laiwu",
+        "label": "莱芜"
+      },
+      {
+        "value": "Heze",
+        "label": "菏泽"
+      },
+      {
+        "value": "Qingdao",
+        "label": "青岛"
+      }
+    ]
+  },
+  {
+    "value": "Ningxia",
+    "label": "宁夏",
+    "children": [
+      {
+        "value": "Zhongwei",
+        "label": "中卫"
+      },
+      {
+        "value": "Wuzhong",
+        "label": "吴忠"
+      },
+      {
+        "value": "Guyuan",
+        "label": "固原"
+      },
+      {
+        "value": "Shizuishan",
+        "label": "石嘴山"
+      },
+      {
+        "value": "Yinchuan",
+        "label": "银川"
+      }
+    ]
+  },
+  {
+    "value": "Shanxi",
+    "label": "山西",
+    "children": [
+      {
+        "value": "Linfen",
+        "label": "临汾"
+      },
+      {
+        "value": "Lüliang",
+        "label": "吕梁"
+      },
+      {
+        "value": "Datong",
+        "label": "大同"
+      },
+      {
+        "value": "Taiyuan",
+        "label": "太原"
+      },
+      {
+        "value": "Xinzhou",
+        "label": "忻州"
+      },
+      {
+        "value": "Jinzhong",
+        "label": "晋中"
+      },
+      {
+        "value": "Jincheng",
+        "label": "晋城"
+      },
+      {
+        "value": "Shuozhou",
+        "label": "朔州"
+      },
+      {
+        "value": "Yuncheng",
+        "label": "运城"
+      },
+      {
+        "value": "Changzhi",
+        "label": "长治"
+      },
+      {
+        "value": "Yangquan",
+        "label": "阳泉"
+      }
+    ]
+  },
+  {
+    "value": "Yunnan",
+    "label": "云南",
+    "children": [
+      {
+        "value": "Lincang",
+        "label": "临沧"
+      },
+      {
+        "value": "Lijiang",
+        "label": "丽江"
+      },
+      {
+        "value": "Baoshan",
+        "label": "保山"
+      },
+      {
+        "value": "Dali",
+        "label": "大理"
+      },
+      {
+        "value": "Dehong",
+        "label": "德宏"
+      },
+      {
+        "value": "Nujiang",
+        "label": "怒江"
+      },
+      {
+        "value": "Wenshan",
+        "label": "文山"
+      },
+      {
+        "value": "Kunming",
+        "label": "昆明"
+      },
+      {
+        "value": "Zhaotong",
+        "label": "昭通"
+      },
+      {
+        "value": "Pu'er",
+        "label": "普洱"
+      },
+      {
+        "value": "Qujing",
+        "label": "曲靖"
+      },
+      {
+        "value": "Chuxiong",
+        "label": "楚雄"
+      },
+      {
+        "value": "Yuxi",
+        "label": "玉溪"
+      },
+      {
+        "value": "Honghe",
+        "label": "红河"
+      },
+      {
+        "value": "Xishuangbanna",
+        "label": "西双版纳"
+      },
+      {
+        "value": "Diqing",
+        "label": "迪庆"
+      }
+    ]
+  },
+  {
+    "value": "Liaoning",
+    "label": "辽宁",
+    "children": [
+      {
+        "value": "Dandong",
+        "label": "丹东"
+      },
+      {
+        "value": "Dalian",
+        "label": "大连"
+      },
+      {
+        "value": "Fushun",
+        "label": "抚顺"
+      },
+      {
+        "value": "Chaoyang",
+        "label": "朝阳"
+      },
+      {
+        "value": "Benxi",
+        "label": "本溪"
+      },
+      {
+        "value": "Shenyang",
+        "label": "沈阳"
+      },
+      {
+        "value": "Panjin",
+        "label": "盘锦"
+      },
+      {
+        "value": "Yingkou",
+        "label": "营口"
+      },
+      {
+        "value": "Huludao",
+        "label": "葫芦岛"
+      },
+      {
+        "value": "Liaoyang",
+        "label": "辽阳"
+      },
+      {
+        "value": "Tieling",
+        "label": "铁岭"
+      },
+      {
+        "value": "Jinzhou",
+        "label": "锦州"
+      },
+      {
+        "value": "Fuxin",
+        "label": "阜新"
+      },
+      {
+        "value": "Anshan",
+        "label": "鞍山"
+      }
+    ]
+  },
+  {
+    "value": "Zhejiang",
+    "label": "浙江",
+    "children": [
+      {
+        "value": "Lishui",
+        "label": "丽水"
+      },
+      {
+        "value": "Taizhou",
+        "label": "台州"
+      },
+      {
+        "value": "Jiaxing",
+        "label": "嘉兴"
+      },
+      {
+        "value": "Ningbo",
+        "label": "宁波"
+      },
+      {
+        "value": "Hangzhou",
+        "label": "杭州"
+      },
+      {
+        "value": "Wenzhou",
+        "label": "温州"
+      },
+      {
+        "value": "Huzhou",
+        "label": "湖州"
+      },
+      {
+        "value": "Shaoxing",
+        "label": "绍兴"
+      },
+      {
+        "value": "Zhoushan",
+        "label": "舟山"
+      },
+      {
+        "value": "Quzhou",
+        "label": "衢州"
+      },
+      {
+        "value": "Jinhua",
+        "label": "金华"
+      }
+    ]
+  },
+  {
+    "value": "Neimenggu",
+    "label": "内蒙古",
+    "children": [
+      {
+        "value": "Ulanqab",
+        "label": "乌兰察布"
+      },
+      {
+        "value": "Wuhai",
+        "label": "乌海"
+      },
+      {
+        "value": "Xinganmeng",
+        "label": "兴安盟"
+      },
+      {
+        "value": "Baotou",
+        "label": "包头"
+      },
+      {
+        "value": "Hulunbuir",
+        "label": "呼伦贝尔"
+      },
+      {
+        "value": "Hohhot",
+        "label": "呼和浩特"
+      },
+      {
+        "value": "Bayannur",
+        "label": "巴彦淖尔"
+      },
+      {
+        "value": "Chifeng",
+        "label": "赤峰"
+      },
+      {
+        "value": "Tongliao",
+        "label": "通辽"
+      },
+      {
+        "value": "Ordos",
+        "label": "鄂尔多斯"
+      },
+      {
+        "value": "Linguolexi",
+        "label": "锡林郭勒"
+      },
+      {
+        "value": "Alashanmeng",
+        "label": "阿拉善盟"
+      }
+    ]
+  },
+  {
+    "value": "Xinjiang",
+    "label": "新疆",
+    "children": [
+      {
+        "value": "Urumqi",
+        "label": "乌鲁木齐"
+      },
+      {
+        "value": "Yili",
+        "label": "伊犁"
+      },
+      {
+        "value": "Kezilesukeerkezi",
+        "label": "克孜勒苏柯尔克孜"
+      },
+      {
+        "value": "Karamay",
+        "label": "克拉玛依"
+      },
+      {
+        "value": "Boertala",
+        "label": "博尔塔拉"
+      },
+      {
+        "value": "Tulufan",
+        "label": "吐鲁番"
+      },
+      {
+        "value": "Turpan",
+        "label": "吐鲁番"
+      },
+      {
+        "value": "Hetian",
+        "label": "和田"
+      },
+      {
+        "value": "Hami",
+        "label": "哈密"
+      },
+      {
+        "value": "Kashen",
+        "label": "喀什"
+      },
+      {
+        "value": "Tacheng",
+        "label": "塔城"
+      },
+      {
+        "value": "Bayinguoleng",
+        "label": "巴音郭楞"
+      },
+      {
+        "value": "Changji",
+        "label": "昌吉"
+      },
+      {
+        "value": "Akesu",
+        "label": "阿克苏"
+      },
+      {
+        "value": "Aletai",
+        "label": "阿勒泰"
+      }
+    ]
+  },
+  {
+    "value": "Sichuan",
+    "label": "四川",
+    "children": [
+      {
+        "value": "Leshan",
+        "label": "乐山"
+      },
+      {
+        "value": "Neijiang",
+        "label": "内江"
+      },
+      {
+        "value": "Liangshan",
+        "label": "凉山"
+      },
+      {
+        "value": "Nanchong",
+        "label": "南充"
+      },
+      {
+        "value": "Yibin",
+        "label": "宜宾"
+      },
+      {
+        "value": "Bazhong",
+        "label": "巴中"
+      },
+      {
+        "value": "Guangyuan",
+        "label": "广元"
+      },
+      {
+        "value": "Guang'an",
+        "label": "广安"
+      },
+      {
+        "value": "Deyang",
+        "label": "德阳"
+      },
+      {
+        "value": "Chengdu",
+        "label": "成都"
+      },
+      {
+        "value": "Panzhihua",
+        "label": "攀枝花"
+      },
+      {
+        "value": "Luzhou",
+        "label": "泸州"
+      },
+      {
+        "value": "Ganzi",
+        "label": "甘孜"
+      },
+      {
+        "value": "Meishan",
+        "label": "眉山"
+      },
+      {
+        "value": "Mianyang",
+        "label": "绵阳"
+      },
+      {
+        "value": "Zigong",
+        "label": "自贡"
+      },
+      {
+        "value": "Ziyang",
+        "label": "资阳"
+      },
+      {
+        "value": "Dazhou",
+        "label": "达州"
+      },
+      {
+        "value": "Suining",
+        "label": "遂宁"
+      },
+      {
+        "value": "Aba",
+        "label": "阿坝"
+      },
+      {
+        "value": "Ya'an",
+        "label": "雅安"
+      }
+    ]
+  },
+  {
+    "value": "Anhui",
+    "label": "安徽",
+    "children": [
+      {
+        "value": "Bozhou",
+        "label": "亳州"
+      },
+      {
+        "value": "Lu'an",
+        "label": "六安"
+      },
+      {
+        "value": "Hefei",
+        "label": "合肥"
+      },
+      {
+        "value": "Anqing",
+        "label": "安庆"
+      },
+      {
+        "value": "Xuancheng",
+        "label": "宣城"
+      },
+      {
+        "value": "Suzhou",
+        "label": "宿州"
+      },
+      {
+        "value": "Chaohu",
+        "label": "巢湖"
+      },
+      {
+        "value": "Chizhou",
+        "label": "池州"
+      },
+      {
+        "value": "Huaibei",
+        "label": "淮北"
+      },
+      {
+        "value": "Huainan",
+        "label": "淮南"
+      },
+      {
+        "value": "Chuzhou",
+        "label": "滁州"
+      },
+      {
+        "value": "Wuhu",
+        "label": "芜湖"
+      },
+      {
+        "value": "Bengbu",
+        "label": "蚌埠"
+      },
+      {
+        "value": "Tongling",
+        "label": "铜陵"
+      },
+      {
+        "value": "Fuyang",
+        "label": "阜阳"
+      },
+      {
+        "value": "Ma'anshan",
+        "label": "马鞍山"
+      },
+      {
+        "value": "Huangshan",
+        "label": "黄山"
+      }
+    ]
+  },
+  {
+    "value": "Hebei",
+    "label": "河北",
+    "children": [
+      {
+        "value": "Baoding",
+        "label": "保定"
+      },
+      {
+        "value": "Tangshan",
+        "label": "唐山"
+      },
+      {
+        "value": "Langfang",
+        "label": "廊坊"
+      },
+      {
+        "value": "Zhangjiakou",
+        "label": "张家口"
+      },
+      {
+        "value": "Chengde",
+        "label": "承德"
+      },
+      {
+        "value": "Cangzhou",
+        "label": "沧州"
+      },
+      {
+        "value": "Shijiazhuang",
+        "label": "石家庄"
+      },
+      {
+        "value": "Qinhuangdao",
+        "label": "秦皇岛"
+      },
+      {
+        "value": "Hengshui",
+        "label": "衡水"
+      },
+      {
+        "value": "Xingtai",
+        "label": "邢台"
+      },
+      {
+        "value": "Handan",
+        "label": "邯郸"
+      }
+    ]
+  },
+  {
+    "value": "Guizhou",
+    "label": "贵州",
+    "children": [
+      {
+        "value": "Liupanshui",
+        "label": "六盘水"
+      },
+      {
+        "value": "Anshun",
+        "label": "安顺"
+      },
+      {
+        "value": "Bijie",
+        "label": "毕节"
+      },
+      {
+        "value": "Bijie",
+        "label": "毕节"
+      },
+      {
+        "value": "Guiyang",
+        "label": "贵阳"
+      },
+      {
+        "value": "Zunyi",
+        "label": "遵义"
+      },
+      {
+        "value": "Tongren",
+        "label": "铜仁"
+      },
+      {
+        "value": "Tongren",
+        "label": "铜仁"
+      },
+      {
+        "value": "Qiandongnan",
+        "label": "黔东南"
+      },
+      {
+        "value": "Qiannan",
+        "label": "黔南"
+      },
+      {
+        "value": "Qianxinan",
+        "label": "黔西南"
+      }
+    ]
+  },
+  {
+    "value": "Gansu",
+    "label": "甘肃",
+    "children": [
+      {
+        "value": "Lanzhou",
+        "label": "兰州"
+      },
+      {
+        "value": "Jiayuguan",
+        "label": "嘉峪关"
+      },
+      {
+        "value": "Tianshui",
+        "label": "天水"
+      },
+      {
+        "value": "Dingxi",
+        "label": "定西"
+      },
+      {
+        "value": "Pingliang",
+        "label": "平凉"
+      },
+      {
+        "value": "Qingyang",
+        "label": "庆阳"
+      },
+      {
+        "value": "Zhangye",
+        "label": "张掖"
+      },
+      {
+        "value": "Wuwei",
+        "label": "武威"
+      },
+      {
+        "value": "Gannan",
+        "label": "甘南"
+      },
+      {
+        "value": "Baiyin",
+        "label": "白银"
+      },
+      {
+        "value": "Jiuquan",
+        "label": "酒泉"
+      },
+      {
+        "value": "Jinchang",
+        "label": "金昌"
+      },
+      {
+        "value": "Longnan",
+        "label": "陇南"
+      }
+    ]
+  },
+  {
+    "value": "Beijing",
+    "label": "北京",
+    "children": [
+      {
+        "value": "Beijing",
+        "label": "北京"
+      }
+    ]
+  },
+  {
+    "value": "Guangxi",
+    "label": "广西",
+    "children": [
+      {
+        "value": "Beihai",
+        "label": "北海"
+      },
+      {
+        "value": "Nanning",
+        "label": "南宁"
+      },
+      {
+        "value": "Chongzuo",
+        "label": "崇左"
+      },
+      {
+        "value": "Laibin",
+        "label": "来宾"
+      },
+      {
+        "value": "Liuzhou",
+        "label": "柳州"
+      },
+      {
+        "value": "Guilin",
+        "label": "桂林"
+      },
+      {
+        "value": "Wuzhou",
+        "label": "梧州"
+      },
+      {
+        "value": "Hechi",
+        "label": "河池"
+      },
+      {
+        "value": "Yulin",
+        "label": "玉林"
+      },
+      {
+        "value": "Baise",
+        "label": "百色"
+      },
+      {
+        "value": "Guigang",
+        "label": "贵港"
+      },
+      {
+        "value": "Hezhou",
+        "label": "贺州"
+      },
+      {
+        "value": "Qinzhou",
+        "label": "钦州"
+      },
+      {
+        "value": "Fangchenggang",
+        "label": "防城港"
+      }
+    ]
+  },
+  {
+    "value": "Hubei",
+    "label": "湖北",
+    "children": [
+      {
+        "value": "Shiyan",
+        "label": "十堰"
+      },
+      {
+        "value": "Xianning",
+        "label": "咸宁"
+      },
+      {
+        "value": "Xiaogan",
+        "label": "孝感"
+      },
+      {
+        "value": "Yichang",
+        "label": "宜昌"
+      },
+      {
+        "value": "Enshi",
+        "label": "恩施"
+      },
+      {
+        "value": "Wuhan",
+        "label": "武汉"
+      },
+      {
+        "value": "Jingzhou",
+        "label": "荆州"
+      },
+      {
+        "value": "Jingmen",
+        "label": "荆门"
+      },
+      {
+        "value": "Xiangfan",
+        "label": "襄樊"
+      },
+      {
+        "value": "Ezhou",
+        "label": "鄂州"
+      },
+      {
+        "value": "Suizhou",
+        "label": "随州"
+      },
+      {
+        "value": "Huanggang",
+        "label": "黄冈"
+      },
+      {
+        "value": "Huangshi",
+        "label": "黄石"
+      }
+    ]
+  },
+  {
+    "value": "Jiangsu",
+    "label": "江苏",
+    "children": [
+      {
+        "value": "Nanjing",
+        "label": "南京"
+      },
+      {
+        "value": "Nantong",
+        "label": "南通"
+      },
+      {
+        "value": "Suqian",
+        "label": "宿迁"
+      },
+      {
+        "value": "Changzhou",
+        "label": "常州"
+      },
+      {
+        "value": "Xuzhou",
+        "label": "徐州"
+      },
+      {
+        "value": "Yangzhou",
+        "label": "扬州"
+      },
+      {
+        "value": "Wuxi",
+        "label": "无锡"
+      },
+      {
+        "value": "Taizhou",
+        "label": "泰州"
+      },
+      {
+        "value": "Huainan",
+        "label": "淮安"
+      },
+      {
+        "value": "Yancheng",
+        "label": "盐城"
+      },
+      {
+        "value": "Suzhou",
+        "label": "苏州"
+      },
+      {
+        "value": "Lianyungang",
+        "label": "连云港"
+      },
+      {
+        "value": "Zhenjiang",
+        "label": "镇江"
+      }
+    ]
+  },
+  {
+    "value": "Jilin",
+    "label": "吉林",
+    "children": [
+      {
+        "value": "Jilin",
+        "label": "吉林"
+      },
+      {
+        "value": "Siping",
+        "label": "四平"
+      },
+      {
+        "value": "Yanbian",
+        "label": "延边"
+      },
+      {
+        "value": "Songyuan",
+        "label": "松原"
+      },
+      {
+        "value": "Baicheng",
+        "label": "白城"
+      },
+      {
+        "value": "Baishan",
+        "label": "白山"
+      },
+      {
+        "value": "Liaoyuan",
+        "label": "辽源"
+      },
+      {
+        "value": "Tonghua",
+        "label": "通化"
+      },
+      {
+        "value": "Changchun",
+        "label": "长春"
+      }
+    ]
+  },
+  {
+    "value": "Shanxi",
+    "label": "陕西",
+    "children": [
+      {
+        "value": "Xianyang",
+        "label": "咸阳"
+      },
+      {
+        "value": "Shangluo",
+        "label": "商洛"
+      },
+      {
+        "value": "Ankang",
+        "label": "安康"
+      },
+      {
+        "value": "Baoji",
+        "label": "宝鸡"
+      },
+      {
+        "value": "Yan'an",
+        "label": "延安"
+      },
+      {
+        "value": "Yulin",
+        "label": "榆林"
+      },
+      {
+        "value": "Hanzhong",
+        "label": "汉中"
+      },
+      {
+        "value": "Weinan",
+        "label": "渭南"
+      },
+      {
+        "value": "Xi'an",
+        "label": "西安"
+      },
+      {
+        "value": "Tongchuan",
+        "label": "铜川"
+      }
+    ]
+  },
+  {
+    "value": "Tianjin",
+    "label": "天津",
+    "children": [
+      {
+        "value": "Tianjin",
+        "label": "天津"
+      }
+    ]
+  },
+  {
+    "value": "Hunan",
+    "label": "湖南",
+    "children": [
+      {
+        "value": "Loudi",
+        "label": "娄底"
+      },
+      {
+        "value": "Yueyang",
+        "label": "岳阳"
+      },
+      {
+        "value": "Changde",
+        "label": "常德"
+      },
+      {
+        "value": "Zhangjiajie",
+        "label": "张家界"
+      },
+      {
+        "value": "Huaihua",
+        "label": "怀化"
+      },
+      {
+        "value": "Zhuzhou",
+        "label": "株洲"
+      },
+      {
+        "value": "Yongzhou",
+        "label": "永州"
+      },
+      {
+        "value": "Xiangtan",
+        "label": "湘潭"
+      },
+      {
+        "value": "Xiangxi",
+        "label": "湘西"
+      },
+      {
+        "value": "Yiyang",
+        "label": "益阳"
+      },
+      {
+        "value": "Hengyang",
+        "label": "衡阳"
+      },
+      {
+        "value": "Shaoyang",
+        "label": "邵阳"
+      },
+      {
+        "value": "Chenzhou",
+        "label": "郴州"
+      },
+      {
+        "value": "Changsha",
+        "label": "长沙"
+      }
+    ]
+  },
+  {
+    "value": "Xizang",
+    "label": "西藏",
+    "children": [
+      {
+        "value": "Shannan",
+        "label": "山南"
+      },
+      {
+        "value": "Shannan",
+        "label": "山南"
+      },
+      {
+        "value": "Lhasa",
+        "label": "拉萨"
+      },
+      {
+        "value": "Rikaze",
+        "label": "日喀则"
+      },
+      {
+        "value": "Shigatse",
+        "label": "日喀则"
+      },
+      {
+        "value": "Changdou",
+        "label": "昌都"
+      },
+      {
+        "value": "Chamdo",
+        "label": "昌都"
+      },
+      {
+        "value": "Linzhi",
+        "label": "林芝"
+      },
+      {
+        "value": "Nyingchi",
+        "label": "林芝"
+      },
+      {
+        "value": "Naqu",
+        "label": "那曲"
+      },
+      {
+        "value": "Ali",
+        "label": "阿里"
+      }
+    ]
+  },
+  {
+    "value": "Qinghai",
+    "label": "青海",
+    "children": [
+      {
+        "value": "Guoluo",
+        "label": "果洛"
+      },
+      {
+        "value": "Haidong",
+        "label": "海东"
+      },
+      {
+        "value": "Haidong",
+        "label": "海东"
+      },
+      {
+        "value": "Haibei",
+        "label": "海北"
+      },
+      {
+        "value": "Hainan",
+        "label": "海南"
+      },
+      {
+        "value": "Haixi",
+        "label": "海西"
+      },
+      {
+        "value": "Yushu",
+        "label": "玉树"
+      },
+      {
+        "value": "Xining",
+        "label": "西宁"
+      },
+      {
+        "value": "Huangnan",
+        "label": "黄南"
+      }
+    ]
+  },
+  {
+    "value": "Chongqing",
+    "label": "重庆",
+    "children": [
+      {
+        "value": "Chongqing",
+        "label": "重庆"
+      }
+    ]
+  }
+]

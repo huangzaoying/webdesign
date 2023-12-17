@@ -32,3 +32,10 @@ export const delUser = (data) => {
 export const getMenu = (data) => {
     return http.post('/permission/getMenu', data)
 }
+
+export const login = (data) => {
+    return http.post('/user/login', data)
+}
+export const register = (data) => {
+    return http.post('/user/register', data)
+}

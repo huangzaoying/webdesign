@@ -22,7 +22,6 @@
               v-model="value"
               filterable
               :clearable="true"
-
               @change="sort($event)"
           >
             <el-option
@@ -131,7 +130,6 @@
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
-
     </el-dialog>
   </div>
 </template>
@@ -249,16 +247,12 @@ export default {
       },
       currentPage: 1,
       pageSize: 5,
-      radio: '1',
-      // 搜索值
       query: '',
       dialogTableVisible: false,
       selectedRowDetails: {
         describe: '',
         images: ['user.png', 'user-default.png'],
       },
-      // 保存已经选中的角色id值
-      selectRoleId: '',
       //查找类型
       options: [
         {
@@ -298,19 +292,14 @@ export default {
     }
   },
   computed: {
-    // 根据当前页和每页显示的数量计算显示的数据
     displayedData() {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
-      return this.data.list.slice(startIndex, endIndex);
+      return this.data.list.slice(startIndex, endIndex);     // 根据当前页和每页显示的数量计算显示的数据
     },
-    // 计算总数据量
     totalItems() {
-      return this.data.list.length;
-    },
-    totalPages() {
-      return Math.ceil(this.totalItems / this.pageSize);
-    },
+      return this.data.list.length; // 计算总数据量
+    }
   },
   created() {
 
@@ -322,17 +311,12 @@ export default {
       this.selectedRowDetails.images = ['user.png', 'user-default.png', 'user-default.png', 'user-default.png', 'user.png', 'user-default.png', 'user-default.png', 'user-default.png'];
       this.dialogTableVisible = true;
     },
-    //获取数据
-
-    async getcourseList() {
-
-    },
     handleCurrentChange(newPage) {
       this.currentPage = newPage;
     },
     handleSizeChange(newSize) {
       this.pageSize = newSize;
-      this.currentPage = 1; // 切换每页显示数量时，回到第一页
+      this.currentPage = 1;
     },
   },
 }

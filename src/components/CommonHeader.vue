@@ -20,10 +20,10 @@
     <div class="r-content">
       <el-dropdown @command="handleClick">
         <span class="el-dropdown-link">
-          <img class="user" src="../assets/images/user.png" alt="" />
+          <img class="user" src="../assets/images/user-default.png" alt="" />
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>个人中心</el-dropdown-item>
+          <el-dropdown-item command="user">个人中心</el-dropdown-item>
           <el-dropdown-item command="cancel">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -49,6 +49,8 @@ export default {
         Cookie.remove("menu");
         // 跳转到登录页
         this.$router.push("/login");
+      } else if(command == "user") {
+        this.$router.push("/home");
       }
     },
   },
