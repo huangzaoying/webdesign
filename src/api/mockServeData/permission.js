@@ -6,7 +6,7 @@ export default {
     // 判断账号和密码是否对应
     if (username === 'admin' && password === 'admin') {
       return {
-        code: 20000,
+        code: 200,
         data: {
           menu: [
             {
@@ -17,11 +17,11 @@ export default {
               url: 'Home.vue'
             },
             {
-              path: '/mall',
-              name: 'mall',
-              label: '商品管理',
+              path: '/info',
+              name: 'info',
+              label: '个人信息',
               icon: 'video-play',
-              url: 'Mall.vue'
+              url: 'Info.vue'
             },
             {
               path: '/user',
@@ -31,20 +31,20 @@ export default {
               url: 'User.vue'
             },
             {
-              label: '其他',
+              label: '寻去处',
               icon: 'location',
               children: [
                 {
                   path: '/page1',
-                  name: 'page1',
-                  label: '页面1',
+                  name: 'query',
+                  label: '寻去处-查询',
                   icon: 'setting',
                   url: 'PageOne.vue'
                 },
                 {
                   path: '/page2',
-                  name: 'page2',
-                  label: '页面2',
+                  name: 'submit',
+                  label: '寻去处-发布',
                   icon: 'setting',
                   url: 'PageTwo.vue'
                 }
@@ -57,7 +57,7 @@ export default {
       }
     } else if (username === 'xiaoxiao' && password === 'xiaoxiao') {
       return {
-        code: 20000,
+        code: 200,
         data: {
           menu: [
             {
@@ -70,9 +70,9 @@ export default {
             {
               path: '/video',
               name: 'video',
-              label: '商品管理',
+              label: '个人信息',
               icon: 'video-play',
-              url: 'Mall.vue'
+              url: 'Info.vue'
             }
           ],
           token: Mock.Random.guid(),

@@ -37,4 +37,10 @@ export default {
 .el-header {
     padding: 0
 }
+.el-container {
+  height: 100vh; /* 请注意这里，这里的高度撑开了 el-container 的高度 */
+}
+.el-aside {
+  height: 100%; /* 高度设置为 100% */
+}
 </style>

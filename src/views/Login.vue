@@ -72,14 +72,14 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           getMenu(this.form).then(({data}) => {
-            if (data.code === 20000) {
+            if (data.code === 200) {
               // token信息存入cookie用于不同页面间的通信
               Cookie.set("token", data.data.token);
               // 获取菜单的数据，存入store中
               this.$store.commit("setMenu", data.data.menu);
               this.$store.commit("addMenu", this.$router);
               // 跳转到首页
-              this.$message.success('登录成功!')
+              this.$message.success('登录成功!');
               this.$router.push("/home");
             } else {
               this.$message.error(data.data.message);
@@ -91,11 +91,12 @@ export default {
     handleRegister() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          register(this.form).then(({data}) => {
+          getRegist(this.form).then((data) => {
+            console.log(data)
             if (data.code === 200) {
-              this.$message.success('注册成功')
+              this.$message.success(data.data.message)
             } else {
-              this.$message.success('注册成功')
+              this.$message.success(data.data.message)
             }
           });
         }

@@ -63,7 +63,6 @@ export default {
                     menuArray.push(item)
                 }
             })
-
             // 路由的动态添加
             menuArray.forEach(item => {
                 router.addRoute('Main', item)

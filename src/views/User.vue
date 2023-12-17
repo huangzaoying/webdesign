@@ -6,14 +6,7 @@
       width="50%"
       :before-close="handleClose"
     >
-      <!-- 用户的表单信息 -->
-      <el-form
-        ref="form"
-        :rules="rules"
-        :inline="true"
-        :model="form"
-        label-width="80px"
-      >
+      <el-form ref="form" :rules="rules" :inline="true" :model="form" label-width="80px">
         <el-form-item label="姓名" prop="name">
           <el-input placeholder="请输入姓名" v-model="form.name"></el-input>
         </el-form-item>
