@@ -3,7 +3,34 @@
     <el-card class="box-card">
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-button type="primary" @click="showDialog">发布</el-button>
+          <el-input
+            placeholder="输入关键字搜索"
+            clearable
+            v-model="query"
+            @clear="a = true"
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="search(query)"
+            ></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="4">
+          <el-select
+            v-model="value"
+            filterable
+            :clearable="true"
+            @change="sort($event)"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </el-col>
       </el-row>
       <el-table :data="displayedData" stripe style="width: 100%" border>
@@ -12,14 +39,14 @@
             {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="publisherUserId" label="发布用户"></el-table-column>
-        <el-table-column prop="destinationType" label="去处类型"></el-table-column>
-        <el-table-column prop="themeName" label="请求主题"></el-table-column>
-        <el-table-column prop="maxPrice" label="最高单价"></el-table-column>
+        <el-table-column prop="name" label="发布用户"></el-table-column>
+        <el-table-column prop="type" label="去处类型"></el-table-column>
+        <el-table-column prop="theme" label="请求主题"></el-table-column>
+        <el-table-column prop="price" label="最高单价"></el-table-column>
         <el-table-column prop="endTime" label="结束日期"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="修改时间"></el-table-column>
-        <el-table-column prop="status" label="状态" align="center">
+        <el-table-column prop="state" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
               <el-icon v-if="scope.row.state === 1" name="check"></el-icon>
@@ -33,22 +60,22 @@
           <template v-slot="scope">
             <div class="button-container">
               <el-button
-                  type="primary"
-                  icon="el-icon-edit"
-                  size="mini"
-                  @click="updateRequest(scope.row)"
+                type="primary"
+                icon="el-icon-edit"
+                size="mini"
+                @click="updateRequest(scope.row)"
               ></el-button>
               <el-button
-                  type="danger"
-                  icon="el-icon-delete"
-                  size="mini"
-                  @click="deleteRequest(scope.row)"
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="deleteRequest(scope.row)"
               ></el-button>
               <el-button
-                  type="info"
-                  icon="el-icon-message"
-                  size="mini"
-                  @click="showDetails(scope.row)"
+                type="info"
+                icon="el-icon-message"
+                size="mini"
+                @click="showDetails(scope.row)"
               ></el-button>
             </div>
           </template>
@@ -56,38 +83,40 @@
       </el-table>
 
       <el-pagination
-          @current-change="handleCurrentChange"
-          @size-change="handleSizeChange"
-          :current-page="currentPage"
-          :page-size="pageSize"
-          :page-sizes="[5, 9, 13, 15]"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="totalItems"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :page-sizes="[5, 9, 13, 15]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalItems"
       >
       </el-pagination>
     </el-card>
-    <el-dialog
-        :visible.sync="dialogTableVisible"
-        title="详情信息"
-        width="50%"
-    >
+    <el-dialog :visible.sync="dialogTableVisible" title="详情信息" width="50%">
       <el-card>
         <el-descriptions :column="1">
-          <el-descriptions-item label="请求描述">{{ selectedRowDetails.describe }}</el-descriptions-item>
+          <el-descriptions-item label="请求描述">{{
+            selectedRowDetails.describe
+          }}</el-descriptions-item>
           <el-descriptions-item label="图片介绍">
-            <div style="display: flex; flex-wrap: wrap;">
+            <div style="display: flex; flex-wrap: wrap">
               <el-image
-                  v-for="(image, index) in selectedRowDetails.images"
-                  :key="index"
-                  :src="require('@/assets/images/' + image)"
-                  style="flex: 0 0 calc(50% - 10px); margin: 5px;"
+                v-for="(image, index) in selectedRowDetails.images"
+                :key="index"
+                :src="require('@/assets/images/' + image)"
+                style="flex: 0 0 calc(50% - 10px); margin: 5px"
               ></el-image>
             </div>
           </el-descriptions-item>
         </el-descriptions>
       </el-card>
     </el-dialog>
-    <el-dialog :visible.sync="dialogVisible" title="发布新的请求信息" width="50%">
+    <el-dialog
+      :visible.sync="dialogVisible"
+      title="发布新的请求信息"
+      width="50%"
+    >
       <el-form :model="requestData" :rules="formRules" ref="requestDataForm">
         <!-- 发布用户标识 -->
         <el-form-item label="发布用户标识" prop="userId">
@@ -111,7 +140,6 @@
         <!-- 图片介绍 -->
         <el-form-item label="图片介绍">
           <!-- 这里添加上传图片组件，或其他适用于图片的组件 -->
-
         </el-form-item>
 
         <!-- 最高单价 -->
@@ -121,17 +149,26 @@
 
         <!-- 请求结束日期 -->
         <el-form-item label="请求结束日期" prop="endDate">
-          <el-date-picker v-model="requestData.endDate" type="date"></el-date-picker>
+          <el-date-picker
+            v-model="requestData.endDate"
+            type="date"
+          ></el-date-picker>
         </el-form-item>
 
         <!-- 创建时间 -->
         <el-form-item label="创建时间" prop="createTime">
-          <el-date-picker v-model="requestData.createTime" type="datetime"></el-date-picker>
+          <el-date-picker
+            v-model="requestData.createTime"
+            type="datetime"
+          ></el-date-picker>
         </el-form-item>
 
         <!-- 修改时间 -->
         <el-form-item label="修改时间" prop="updateTime">
-          <el-date-picker v-model="requestData.updateTime" type="datetime"></el-date-picker>
+          <el-date-picker
+            v-model="requestData.updateTime"
+            type="datetime"
+          ></el-date-picker>
         </el-form-item>
 
         <el-form-item label="状态" prop="status">
@@ -150,73 +187,70 @@
     </el-dialog>
   </div>
 </template>
-
-<script>
-import { mapState } from "vuex";
+  
+  <script>
 export default {
   data() {
     return {
-      list: [],
+      list: [
+          {
+            name: "发布者1",
+            type: "类型1",
+            theme: "主题1",
+            describe:
+              "我在开发一个电子商务网站，目前遇到了一个布局问题，希望得到一些关于图片展示的帮助。",
+            price: 100,
+            endTime: "2023-01-01",
+            createTime: "2023-01-01",
+            updateTime: "2023-01-02",
+            state: 1,
+          },
+        ],
       currentPage: 1,
       pageSize: 5,
       // 搜索值
-      query: '',
+      query: "",
       dialogTableVisible: false,
       selectedRowDetails: {
-        describe: '',
-        images: ['user.png', 'user-default.png'],
+        describe: "",
+        images: ["user.png", "user-default.png"],
       },
-      //查找类型
       options: [
         {
-          value: '1',
-          label: '全部',
+          value: "1",
+          label: "全部",
         },
         {
-          value: '2',
-          label: '钓鱼',
+          value: "2",
+          label: "未接受",
         },
         {
-          value: '3',
-          label: '名称',
+          value: "3",
+          label: "已接受",
         },
-        {
-          value: '4',
-          label: '老少皆宜休闲',
-        },
-        {
-          value: '5',
-          label: '农家院',
-        },
-        {
-          value: '6',
-          label: '温泉度假',
-        },
-        {
-          value: '7',
-          label: '僻静休闲',
-        },
-        {
-          value: '8',
-          label: '游乐场',
-        }
       ],
-      value: '1',
+      value: "1",
       dialogVisible: false,
       requestData: {
-        userId: '',
-        destinationType: '',
-        theme: '',
-        description: '',
+        userId: "",
+        destinationType: "",
+        theme: "",
+        description: "",
         // ...其他属性
       },
       formRules: {
-        userId: [{required: true, message: '发布用户标识不能为空', trigger: 'blur'}],
-        destinationType: [{required: true, message: '去处类型不能为空', trigger: 'blur'}],
-        theme: [{required: true, message: '请求主题名称不能为空', trigger: 'blur'}],
+        userId: [
+          { required: true, message: "发布用户标识不能为空", trigger: "blur" },
+        ],
+        destinationType: [
+          { required: true, message: "去处类型不能为空", trigger: "blur" },
+        ],
+        theme: [
+          { required: true, message: "请求主题名称不能为空", trigger: "blur" },
+        ],
         // ...其他规则
       },
-    }
+    };
   },
   computed: {
     // 根据当前页和每页显示的数量计算显示的数据
@@ -232,30 +266,24 @@ export default {
     totalPages() {
       return Math.ceil(this.totalItems / this.pageSize);
     },
-    ...mapState({
-      go: (state) => state.go,
-    }),
   },
-  created() {
-    this.list = [...this.go.requests];
-  },
+  created() {},
   methods: {
     showDialog() {
       this.dialogVisible = true;
     },
     showDetails(row) {
-      this.selectedRowDetails.describe = row.description;
-      this.selectedRowDetails.images = row.introImages || [];
-      this.selectedRowDetails.images = ['user.png', 'user-default.png', 'user-default.png', 'user-default.png', 'user.png', 'user-default.png', 'user-default.png', 'user-default.png'];
+      this.selectedRowDetails.describe = row.describe;
+      this.selectedRowDetails.images = row.images || [];
       this.dialogTableVisible = true;
     },
     // TODO:实现修改功能
     updateRequest(row) {
-      console.log(row)
+      console.log(row);
     },
     // TODO:实现删除功能
     deleteRequest(row) {
-      console.log(row)
+      console.log(row);
     },
     // TODO:实现增加功能
     submitForm() {
@@ -263,11 +291,11 @@ export default {
       this.$refs.requestDataForm.validate((valid) => {
         if (valid) {
           // 在这里执行提交逻辑，例如调用API等
-          console.log('Form submitted successfully:', this.requestData);
+          console.log("Form submitted successfully:", this.requestData);
           // 关闭对话框
           this.dialogVisible = false;
         } else {
-          console.log('Form validation failed.');
+          console.log("Form validation failed.");
         }
       });
     },
@@ -279,10 +307,10 @@ export default {
       this.currentPage = 1; // 切换每页显示数量时，回到第一页
     },
   },
-}
+};
 </script>
-
-<style lang="less" scoped>
+  
+  <style lang="less" scoped>
 .el-table {
   margin-top: 15px;
 }

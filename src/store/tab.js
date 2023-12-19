@@ -51,14 +51,12 @@ export default {
             const menuArray = []
             menu.forEach(item => {
                 if (item.children) {
-                    item.children = item.children.map(item => {
-
-                        item.component = () => import(`../views/${item.url}`)
-                        return item
+                    item.children = item.children.map(childItem  => {
+                        childItem .component = () => import(`../views/${childItem .url}`)
+                        return childItem 
                     })
                     menuArray.push(...item.children)
                 } else {
-
                     item.component = () => import(`../views/${item.url}`)
                     menuArray.push(item)
                 }

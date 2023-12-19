@@ -1,7 +1,7 @@
 const state = {
     userId: null,
-    username: '',
-    password: '',
+    userName: '',
+    passWord: '',
     userType: '',
     name: '',
     idType: '',
@@ -10,19 +10,34 @@ const state = {
     userLevel: '',
     bio: '',
     city: '',
-    registrationTime: null,
+    registerTime: null,
     updateTime: null
 }
 
 const mutations = {
+    setUser(state, user) {
+        state.userId = user.userId
+        state.userName = user.userName
+        state.passWord = user.passWord
+        state.userType = user.userType
+        state.name = user.name
+        state.idType = user.idType
+        state.idNumber = user.idNumber
+        state.phoneNumber = user.phoneNumber
+        state.userLevel = user.userLevel
+        state.bio = user.bio
+        state.city = user.city
+        state.registerTime = user.registerTime
+        state.updateTime = user.updateTime
+    },
     setUserId(state, userId) {
         state.userId = userId
     },
-    setUsername(state, username) {
-        state.username = username
+    setUsername(state, userName) {
+        state.userName = userName
     },
-    setPassword(state, password) {
-        state.password = password
+    setPassword(state, passWord) {
+        state.passWord = passWord
     },
     setUserType(state, userType) {
         state.userType = userType
@@ -48,8 +63,8 @@ const mutations = {
     setCity(state, city) {
         state.city = city
     },
-    setRegistrationTime(state, registrationTime) {
-        state.registrationTime = registrationTime
+    setregisterTime(state, registerTime) {
+        state.registerTime = registerTime
     },
     setUpdateTime(state, updateTime) {
         state.updateTime = updateTime

@@ -1,0 +1,28 @@
+[
+    {
+        "requestId": "req1",
+        "publisherUserId": "user1",
+        "destinationType": "钓鱼",
+        "themeName": "主题1",
+        "description": "描述1",
+        "introImages": ["image1.jpg", "image2.jpg"],
+        "maxPrice": 100,
+        "endTime": "2023-01-01",
+        "createTime": "2023-01-01",
+        "updateTime": "2023-01-02",
+        "status": "已完成"
+    },
+    {
+        "requestId": "req2",
+        "publisherUserId": "user2",
+        "destinationType": "农家院",
+        "themeName": "主题2",
+        "description": "描述2",
+        "introImages": ["image3.jpg", "image4.jpg"],
+        "maxPrice": 200,
+        "endTime": "2023-02-01",
+        "createTime": "2023-02-01",
+        "updateTime": "2023-02-02",
+        "status": "待响应"
+    }
+]

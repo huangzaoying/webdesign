@@ -11,11 +11,6 @@
         </div>
       </el-card>
       <el-card style="margin-top: 20px; height: 460px">
-        <!-- <el-cascader
-          placeholder="请选择地区"
-          :options="options"
-          v-model="selectedLocation"
-        ></el-cascader> -->
         <el-descriptions title="用户信息" :column = "1">
             <el-descriptions-item label="用户名" >{{ userinfo.userName }}</el-descriptions-item>
             <el-descriptions-item label="用户类型" >{{ userinfo.userType == 1 ? "普通用户" : "管理员" }}</el-descriptions-item>
@@ -33,37 +28,30 @@
 </template>
 <script>
 import { getData } from "@/api";
+import { mapState } from 'vuex';
 import * as echarts from "echarts";
 import provincesData from '@/assets/city.json';
+
+
 export default {
   data() {
     return {
-      userinfo: {
-        userId: "",
-        userName: "username",
-        passWord: "password",
-        userType: 1,
-        name:"张三",
-        cardType:"",
-        cardId:"",
-        phoneNumber:"133333333333",
-        level:1,
-        registerCity:"贵州-安顺",
-        registerTime:"2020-10-10",
-        modifyTime:"",
-        bio:"大家好，我是张三，很高兴认识大家！",
-      },
+      userinfo: {},
       selectedLocation: [],
       options: provincesData
     }
   },
+  computed: {
+    ...mapState({
+      user: (state) => state.user,
+    }),
+  },
   methods:{
-    getUserInfo(){
-      getData('/user/getUserInfo').then(res=>{
-        this.userinfo = res.data;
-      })
-    },
-  }
+    
+  },
+  created() {
+    this.userinfo = {...this.user};
+  },
 }
 </script>
 <style lang="less" scoped>

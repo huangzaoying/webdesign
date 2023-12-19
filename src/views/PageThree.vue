@@ -40,14 +40,14 @@
             {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="publisherUserId" label="发布用户"></el-table-column>
-        <el-table-column prop="destinationType" label="去处类型"></el-table-column>
-        <el-table-column prop="themeName" label="请求主题"></el-table-column>
-        <el-table-column prop="maxPrice" label="最高单价"></el-table-column>
+        <el-table-column prop="name" label="发布用户"></el-table-column>
+        <el-table-column prop="type" label="去处类型"></el-table-column>
+        <el-table-column prop="theme" label="请求主题"></el-table-column>
+        <el-table-column prop="price" label="最高单价"></el-table-column>
         <el-table-column prop="endTime" label="结束日期"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
         <el-table-column prop="updateTime" label="修改时间"></el-table-column>
-        <el-table-column prop="status" label="状态" align="center">
+        <el-table-column prop="state" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
               <el-icon v-if="scope.row.state === 1" name="check"></el-icon>
@@ -57,12 +57,20 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="操作" width="180px" align="center">
           <template v-slot="scope">
             <el-button
               type="info"
               icon="el-icon-message"
+              circle
               @click="showDetails(scope.row)"
+            >
+            </el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-position"
+              circle
+              @click="submit(scope.row)"
             >
             </el-button>
           </template>
@@ -99,15 +107,93 @@
         </el-descriptions>
       </el-card>
     </el-dialog>
+    <el-dialog :visible.sync="dialogVisible" title="发布响应">
+      <el-form :model="response">
+        <el-form-item label="描述">
+          <el-input
+            v-model="response.responseDescription"
+            type="textarea"
+          ></el-input>
+        </el-form-item>
+        <el-upload
+          class="upload-demo"
+          drag
+          action="https://jsonplaceholder.typicode.com/posts/"
+          multiple
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">
+            只能上传jpg/png文件，且不超过500kb
+          </div>
+        </el-upload>
+		<el-form-item >
+		  <span> </span>
+		</el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="submitResponse">提交</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
-
-<script>
-import { mapState } from "vuex";
+  
+  <script>
+  import moment from 'moment';
 export default {
   data() {
     return {
-      list: [],
+      data: {
+        list: [
+          {
+            id: "12",
+            name: "发布者1",
+            type: "类型1",
+            theme: "主题1",
+            describe:
+              "我在开发一个电子商务网站，目前遇到了一个布局问题，希望得到一些关于图片展示的帮助。",
+            price: 100,
+            endTime: "2023-01-01",
+            createTime: "2023-01-01",
+            updateTime: "2023-01-02",
+            state: 1,
+          },
+          {
+            name: "发布者2",
+            type: "类型1",
+            theme: "主题1",
+            describe: "描述1",
+            price: 100,
+            endTime: "2023-01-01",
+            createTime: "2023-01-01",
+            updateTime: "2023-01-02",
+            state: 2,
+            category: "",
+            images: [],
+          },
+          {
+            name: "发布者3",
+            type: "类型1",
+            theme: "主题1",
+            describe: "描述1",
+            price: 100,
+            endTime: "2023-01-01",
+            createTime: "2023-01-01",
+            updateTime: "2023-01-02",
+            state: 3,
+          }
+        ],
+      },
+      response: {
+        responseId: null,
+        requestId: null,
+        responseUserId: null,
+        responseDescription: "",
+        responseIntroImages: [],
+        createdTime: null,
+        updatedTime: null,
+        status: 0, // 默认状态为 "待接受" 1 "已接受" 2 "已拒绝" 3 "取消"
+      },
       currentPage: 1,
       pageSize: 5,
       query: "",
@@ -152,34 +238,24 @@ export default {
         },
       ],
       value: "1",
+      dialogVisible: false,
     };
   },
   computed: {
     displayedData() {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
-      return this.list.slice(startIndex, endIndex); // 根据当前页和每页显示的数量计算显示的数据
+      return this.data.list.slice(startIndex, endIndex); // 根据当前页和每页显示的数量计算显示的数据
     },
     totalItems() {
-      return this.list.length; // 计算总数据量
+      return this.data.list.length; // 计算总数据量
     },
-    ...mapState({
-      go: (state) => state.go,
-    }),
   },
-  created() {
-    this.list = [...this.go.requests];
-  },
+  created() {},
   methods: {
     showDetails(row) {
-      this.selectedRowDetails.describe = row.description;
-      this.selectedRowDetails.images = row.introImages || [];
-      this.selectedRowDetails.images = [
-        "user.png",
-        "user-default.png",
-        "user.png",
-        "user-default.png",
-      ];
+      this.selectedRowDetails.describe = row.describe;
+      this.selectedRowDetails.images = row.images || [];
       this.dialogTableVisible = true;
     },
     handleCurrentChange(newPage) {
@@ -189,11 +265,22 @@ export default {
       this.pageSize = newSize;
       this.currentPage = 1;
     },
+    submit(row) {
+      this.dialogVisible = true;
+      this.response.requestId = row.id;
+    },
+    submitResponse() {
+      this.response.createdTime = this.response.updatedTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+      this.response.status = 0;
+      console.log(this.response);
+
+      this.dialogVisible = false;
+    },
   },
 };
 </script>
-
-<style lang="less" scoped>
+  
+  <style lang="less" scoped>
 .el-table {
   margin-top: 15px;
 }

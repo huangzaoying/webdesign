@@ -21,7 +21,7 @@
       </el-form-item>
       <el-form-item class="button-group">
         <el-button @click="login" type="primary"> 登录</el-button>
-        <el-button type="info" @click="handleRegister"> 注册</el-button>
+        <el-button type="info" @click="dialogVisible = true"> 注册</el-button>
       </el-form-item>
     </el-form>
     <div class="el-login-footer">
@@ -38,8 +38,8 @@
         <el-form-item label="姓名" prop="name">
           <el-input v-model="userInfo.name"></el-input>
         </el-form-item>
-        <el-form-item label="选择证件类型" prop="cardType">
-          <el-select v-model="userInfo.cardType" placeholder="证件类型">
+        <el-form-item label="证件类型" prop="cardType">
+          <el-select v-model="userInfo.cardType" placeholder="选择证件类型">
             <el-option label="身份证" value="0"></el-option>
             <el-option label="其他" value="1"></el-option>
           </el-select>
@@ -74,9 +74,10 @@
 import Mock from "mockjs";
 import Cookie from "js-cookie";
 import userMenu from "@/assets/user.json";
-import {login, register,getMenu} from "../api";
+import {login, register,getMenu} from "@/api";
 import provincesData from '@/assets/city.json';
-
+import info from "@/assets/info.json"
+import go from "@/assets/go.json"
 export default {
   data() {
     return {
@@ -95,30 +96,19 @@ export default {
       options: provincesData,
       currentTime: new Date().toLocaleString(),
       form: {
-        username: "admin",
-        password: "admin",
+        username: "admin1",
+        password: "admin1",
       },
       rules: {
         username: [{required: true, trigger: "blur", message: "请输入账号"},
-          {
-            min: 3,
-            max: 10,
-            message: '长度在 3 到 10 个字符',
-            trigger: 'blur',
-          },],
+          {min: 3,max: 10, message: '长度在 3 到 10 个字符',trigger: 'blur',},],
         password: [{required: true, trigger: "blur", message: "请输入密码"},
-          {
-            min: 3,
-            max: 15,
-            message: '密码不少于6位',
-            trigger: 'blur',
-          }
-        ],
+          {min: 6,max: 15,message: '密码不少于6位',trigger: 'blur',}],
       },
       registerRules: {
         userName: [
           {required: true, message: '请输入用户名', trigger: 'blur'},
-          {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+          {min: 3, max: 10, message: '长度在 3 到 10 个字符', trigger: 'blur'}
         ],
         passWord: [
           {required: true, message: '请输入密码', trigger: 'blur'},
@@ -140,9 +130,6 @@ export default {
         registerCity: [
           {required: true, message: '请选择注册城市', trigger: 'change'},
         ],
-        bio: [
-          {required: false, message: '请输入个人简介', trigger: 'blur'},
-        ],
       },
     };
   },
@@ -161,6 +148,7 @@ export default {
             if (data.code === 200) {
               Cookie.set("token", data.data.token); // token信息存入cookie用于不同页面间的通信              
               this.$store.commit("setMenu", userMenu);// 获取菜单的数据，存入store中
+              // this.$store.commit("setUser", data.data.user);// 获取用户信息，存入store中
               this.$store.commit("addMenu", this.$router);
               this.$message.success('登录成功!');
               this.$router.push("/home");
@@ -171,13 +159,10 @@ export default {
         }
       });
     },
-    handleRegister() {
-      this.dialogVisible = true;
-    },
     register() {
-      this.$refs.form.validate((valid) => {
+      this.$refs.userInfo.validate((valid) => {
         if (valid) {
-          register(this.form).then((data) => {
+          register(this.userInfo).then((data) => {
             console.log(data)
             if (data.code === 200) {
               this.$message.success(data.data.message)
@@ -194,6 +179,11 @@ export default {
       this.currentTime = new Date().toLocaleString()
     }, 1000)
   },
+  destroyed() {
+    this.$store.commit("setUser", info) // 后面删掉
+    console.log(go)
+    this.$store.commit("addRequest",go)
+  }
 };
 </script>
 <style lang="less" scoped>

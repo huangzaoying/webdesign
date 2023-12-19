@@ -28,7 +28,7 @@
         <i :class="`el-icon-${item.icon}`"></i>
         <span slot="title">{{ item.label }}</span>
       </template>
-      <el-menu-item-group v-for="subItem in item.children" :key="subItem.path">
+      <el-menu-item-group  v-for="subItem in item.children" :key="subItem.path">
         <el-menu-item @click="clickMenu(subItem)" :index="subItem.path">{{
           subItem.label
         }}</el-menu-item>
@@ -86,6 +86,7 @@ export default {
     menuData() {
       // 判断当前数据,如果缓存中没有,当前store中去获取
       return JSON.parse(Cookie.get("menu")) || this.$store.state.tab.menu;
+      
     },
     isCollapse() {
       return this.$store.state.tab.isCollapse;

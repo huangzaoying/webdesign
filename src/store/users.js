@@ -1,21 +1,21 @@
 const state = {
-    requests: [],
+    users: [],
 };
 
 const mutations = {
     addRequest(state, any) {
-        any.forEach(request => {
-            state.requests.push(request);
+        any.forEach(user => {
+            state.requests.push(user);
         });
     },
-    updateRequest(state, updatedRequest) {
-        const index = state.requests.findIndex(request => request.requestId === updatedRequest.requestId);
+    updateRequest(state, updatedUser) {
+        const index = state.requests.findIndex(user => user.userId === user.userId);
         if (index !== -1) {
             state.requests.splice(index, 1, updatedRequest);
         }
     },
-    deleteRequest(state, requestId) {
-        const index = state.requests.findIndex(request => request.requestId === requestId);
+    deleteRequest(state, userId) {
+        const index = state.requests.findIndex(user => user.userId === userId);
         if (index !== -1) {
             state.requests.splice(index, 1);
         }
