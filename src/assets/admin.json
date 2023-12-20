@@ -1,0 +1,26 @@
+[
+    {
+        "path": "/admin/user",
+        "label": "用户管理",
+        "icon": "user",
+        "url": "User.vue"
+    },
+    {
+        "path": "/admin/detail",
+        "label": "分析",
+        "icon": "data-analysis",
+        "url": "Count.vue"
+    },
+    {
+        "path": "/admin/go",
+        "label": "管理请求",
+        "icon": "chat-line-round",
+        "url": "Go.vue"
+    },
+    {
+        "path": "/admin/come",
+        "label": "管理响应",
+        "icon": "chat-dot-round",
+        "url": "Come.vue"
+    }
+]

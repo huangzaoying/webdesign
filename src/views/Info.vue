@@ -20,7 +20,7 @@
         <el-col :span="12">
           <el-form-item label="登录密码">
             <el-input
-              v-model="userInfo.passWord"
+              v-model="userInfo.password"
               disabled
               type="password"
             ></el-input>
@@ -35,7 +35,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="用户姓名">
-            <el-input v-model="userInfo.name" disabled></el-input>
+            <el-input v-model="userInfo.realName" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -66,13 +66,13 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="注册城市">
-            <el-input v-model="userInfo.city" disabled></el-input>
+            <el-input v-model="userInfo.registerCity" disabled></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="用户简介">
             <el-input
-              v-model="userInfo.bio"
+              v-model="userInfo.userIntro"
               type="textarea"
               disabled
             ></el-input>
@@ -87,7 +87,7 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="修改时间">
-            <el-input v-model="userInfo.updateTime" disabled></el-input>
+            <el-input v-model="userInfo.modifyTime" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>

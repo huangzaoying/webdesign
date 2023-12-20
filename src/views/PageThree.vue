@@ -40,19 +40,28 @@
             {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="发布用户"></el-table-column>
-        <el-table-column prop="type" label="去处类型"></el-table-column>
-        <el-table-column prop="theme" label="请求主题"></el-table-column>
-        <el-table-column prop="price" label="最高单价"></el-table-column>
-        <el-table-column prop="endTime" label="结束日期"></el-table-column>
+        <el-table-column prop="userId" label="发布用户"></el-table-column>
+        <el-table-column
+          prop="destinationType"
+          label="去处类型"
+        ></el-table-column>
+        <el-table-column prop="requestTheme" label="请求主题"></el-table-column>
+        <el-table-column prop="highestPrice" label="最高单价"></el-table-column>
+        <el-table-column
+          prop="requestEndDate"
+          label="结束日期"
+        ></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="修改时间"></el-table-column>
-        <el-table-column prop="state" label="状态" align="center">
+        <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
-              <el-icon v-if="scope.row.state === 1" name="check"></el-icon>
-              <el-icon v-else-if="scope.row.state === 2" name="time"></el-icon>
-              <el-icon v-else-if="scope.row.state === 3" name="close"></el-icon>
+              <el-icon v-if="scope.row.status === 1" name="check"></el-icon>
+              <el-icon v-else-if="scope.row.status === 2" name="time"></el-icon>
+              <el-icon
+                v-else-if="scope.row.status === 3"
+                name="close"
+              ></el-icon>
               <el-icon v-else name="warning"></el-icon>
             </div>
           </template>
@@ -127,9 +136,9 @@
             只能上传jpg/png文件，且不超过500kb
           </div>
         </el-upload>
-		<el-form-item >
-		  <span> </span>
-		</el-form-item>
+        <el-form-item>
+          <span> </span>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitResponse">提交</el-button>
         </el-form-item>
@@ -139,59 +148,20 @@
 </template>
   
   <script>
-  import moment from 'moment';
+import moment from "moment";
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      data: {
-        list: [
-          {
-            id: "12",
-            name: "发布者1",
-            type: "类型1",
-            theme: "主题1",
-            describe:
-              "我在开发一个电子商务网站，目前遇到了一个布局问题，希望得到一些关于图片展示的帮助。",
-            price: 100,
-            endTime: "2023-01-01",
-            createTime: "2023-01-01",
-            updateTime: "2023-01-02",
-            state: 1,
-          },
-          {
-            name: "发布者2",
-            type: "类型1",
-            theme: "主题1",
-            describe: "描述1",
-            price: 100,
-            endTime: "2023-01-01",
-            createTime: "2023-01-01",
-            updateTime: "2023-01-02",
-            state: 2,
-            category: "",
-            images: [],
-          },
-          {
-            name: "发布者3",
-            type: "类型1",
-            theme: "主题1",
-            describe: "描述1",
-            price: 100,
-            endTime: "2023-01-01",
-            createTime: "2023-01-01",
-            updateTime: "2023-01-02",
-            state: 3,
-          }
-        ],
-      },
+      list: [],
       response: {
         responseId: null,
         requestId: null,
-        responseUserId: null,
+        responderId: null,
         responseDescription: "",
-        responseIntroImages: [],
+        responseImage: [],
         createdTime: null,
-        updatedTime: null,
+        modifyTime: null,
         status: 0, // 默认状态为 "待接受" 1 "已接受" 2 "已拒绝" 3 "取消"
       },
       currentPage: 1,
@@ -245,13 +215,18 @@ export default {
     displayedData() {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
-      return this.data.list.slice(startIndex, endIndex); // 根据当前页和每页显示的数量计算显示的数据
+      return this.list.slice(startIndex, endIndex); // 根据当前页和每页显示的数量计算显示的数据
     },
     totalItems() {
-      return this.data.list.length; // 计算总数据量
+      return this.list.length; // 计算总数据量
     },
+    ...mapState({
+      go: (state) => state.go,
+    }),
   },
-  created() {},
+  created() {
+    this.list = [...this.go.requests];
+  },
   methods: {
     showDetails(row) {
       this.selectedRowDetails.describe = row.describe;
@@ -267,11 +242,13 @@ export default {
     },
     submit(row) {
       this.dialogVisible = true;
-      this.response.requestId = row.id;
+      this.response.requestId = row.requestId;
     },
     submitResponse() {
-      this.response.createdTime = this.response.updatedTime = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
+      this.response.createdTime = this.response.modifyTime = new Date();
+      this.response.responderId = this.$store.state.user.userId;
       this.response.status = 0;
+      
       console.log(this.response);
 
       this.dialogVisible = false;

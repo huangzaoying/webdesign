@@ -46,6 +46,7 @@ export default {
             // 判断缓存中是否有数据
             if (!Cookie.get('menu')) return
             const menu = JSON.parse(Cookie.get('menu'))
+            
             state.menu = menu
             // 组装动态路由的数据
             const menuArray = []

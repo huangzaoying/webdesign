@@ -39,19 +39,28 @@
             {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="发布用户"></el-table-column>
-        <el-table-column prop="type" label="去处类型"></el-table-column>
-        <el-table-column prop="theme" label="请求主题"></el-table-column>
-        <el-table-column prop="price" label="最高单价"></el-table-column>
-        <el-table-column prop="endTime" label="结束日期"></el-table-column>
+        <el-table-column prop="userId" label="发布用户"></el-table-column>
+        <el-table-column
+          prop="destinationType"
+          label="去处类型"
+        ></el-table-column>
+        <el-table-column prop="requestTheme" label="请求主题"></el-table-column>
+        <el-table-column prop="highestPrice" label="最高单价"></el-table-column>
+        <el-table-column
+          prop="requestEndDate"
+          label="结束日期"
+        ></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="修改时间"></el-table-column>
-        <el-table-column prop="state" label="状态" align="center">
+        <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
-              <el-icon v-if="scope.row.state === 1" name="check"></el-icon>
-              <el-icon v-else-if="scope.row.state === 2" name="time"></el-icon>
-              <el-icon v-else-if="scope.row.state === 3" name="close"></el-icon>
+              <el-icon v-if="scope.row.status === 1" name="check"></el-icon>
+              <el-icon v-else-if="scope.row.status === 2" name="time"></el-icon>
+              <el-icon
+                v-else-if="scope.row.status === 3"
+                name="close"
+              ></el-icon>
               <el-icon v-else name="warning"></el-icon>
             </div>
           </template>
@@ -189,26 +198,13 @@
 </template>
   
   <script>
+import { mapState } from "vuex";
 export default {
   data() {
     return {
-      list: [
-          {
-            name: "发布者1",
-            type: "类型1",
-            theme: "主题1",
-            describe:
-              "我在开发一个电子商务网站，目前遇到了一个布局问题，希望得到一些关于图片展示的帮助。",
-            price: 100,
-            endTime: "2023-01-01",
-            createTime: "2023-01-01",
-            updateTime: "2023-01-02",
-            state: 1,
-          },
-        ],
+      list: [],
       currentPage: 1,
       pageSize: 5,
-      // 搜索值
       query: "",
       dialogTableVisible: false,
       selectedRowDetails: {
@@ -263,11 +259,13 @@ export default {
     totalItems() {
       return this.list.length;
     },
-    totalPages() {
-      return Math.ceil(this.totalItems / this.pageSize);
-    },
+    ...mapState({
+      go: (state) => state.go,
+    }),
   },
-  created() {},
+  created() {
+    this.list = [...this.go.requests];
+  },
   methods: {
     showDialog() {
       this.dialogVisible = true;

@@ -8,7 +8,7 @@ import PageTwo from '../views/PageTwo.vue'
 import Login from '../views/Login.vue'
 import PageThree from '../views/PageThree.vue'
 import PageFour from '../views/PageFour.vue'
-
+import Count from '../views/Count.vue'
 Vue.use(VueRouter)
 // 1. 创建路由组件
 // 2. 将路由与组件进行映射

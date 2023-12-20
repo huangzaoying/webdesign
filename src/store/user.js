@@ -1,73 +1,73 @@
 const state = {
     userId: null,
     userName: '',
-    passWord: '',
+    password: '',
     userType: '',
-    name: '',
+    realName: '',
     idType: '',
     idNumber: '',
     phoneNumber: '',
     userLevel: '',
-    bio: '',
-    city: '',
+    userIntro: '',
+    registerCity: '',
     registerTime: null,
-    updateTime: null
+    modifyTime: null
 }
 
 const mutations = {
     setUser(state, user) {
-        state.userId = user.userId
-        state.userName = user.userName
-        state.passWord = user.passWord
-        state.userType = user.userType
-        state.name = user.name
-        state.idType = user.idType
-        state.idNumber = user.idNumber
-        state.phoneNumber = user.phoneNumber
-        state.userLevel = user.userLevel
-        state.bio = user.bio
-        state.city = user.city
-        state.registerTime = user.registerTime
-        state.updateTime = user.updateTime
+        state.userId = user.userId;
+        state.userName = user.userName; 
+        state.password = user.password; 
+        state.userType = user.userType;
+        state.realName = user.realName;
+        state.idType = user.idType;
+        state.idNumber = user.idNumber;
+        state.phoneNumber = user.phoneNumber;
+        state.userLevel = user.userLevel;
+        state.userIntro = user.userIntro; 
+        state.registerCity = user.registerCity; 
+        state.registerTime = user.registerTime;
+        state.modifyTime = user.modifyTime; 
     },
     setUserId(state, userId) {
-        state.userId = userId
+        state.userId = userId;
     },
-    setUsername(state, userName) {
-        state.userName = userName
+    setUserName(state, userName) {
+        state.userName = userName;
     },
-    setPassword(state, passWord) {
-        state.passWord = passWord
+    setPassword(state, password) {
+        state.password = password;
     },
     setUserType(state, userType) {
-        state.userType = userType
+        state.userType = userType;
     },
-    setname(state, name) {
-        state.name = name
+    setRealName(state, realName) {
+        state.realName = realName;
     },
     setIdType(state, idType) {
-        state.idType = idType
+        state.idType = idType;
     },
     setIdNumber(state, idNumber) {
-        state.idNumber = idNumber
+        state.idNumber = idNumber;
     },
     setPhoneNumber(state, phoneNumber) {
-        state.phoneNumber = phoneNumber
+        state.phoneNumber = phoneNumber;
     },
     setUserLevel(state, userLevel) {
-        state.userLevel = userLevel
+        state.userLevel = userLevel;
     },
-    setBio(state, bio) {
-        state.bio = bio
+    setUserIntro(state, userIntro) {
+        state.userIntro = userIntro;
     },
-    setCity(state, city) {
-        state.city = city
+    setRegisterCity(state, registerCity) {
+        state.registerCity = registerCity;
     },
-    setregisterTime(state, registerTime) {
-        state.registerTime = registerTime
+    setRegisterTime(state, registerTime) {
+        state.registerTime = registerTime;
     },
-    setUpdateTime(state, updateTime) {
-        state.updateTime = updateTime
+    setModifyTime(state, modifyTime) {
+        state.modifyTime = modifyTime;
     }
 }
 

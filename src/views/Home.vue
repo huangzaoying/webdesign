@@ -5,7 +5,7 @@
         <div class="user">
           <img src="../assets/images/user-default.png" alt="" />
           <div class="userinfo">
-            <p class="name">{{ userinfo.name }}</p>
+            <p class="name">{{ userinfo.realName }}</p>
             <p class="access">{{ userinfo.registerCity }}</p>
           </div>
         </div>
@@ -15,8 +15,8 @@
             <el-descriptions-item label="用户名" >{{ userinfo.userName }}</el-descriptions-item>
             <el-descriptions-item label="用户类型" >{{ userinfo.userType == 1 ? "普通用户" : "管理员" }}</el-descriptions-item>
             <el-descriptions-item label="手机号">{{userinfo.phoneNumber }}</el-descriptions-item>
-            <el-descriptions-item label="用户级别">{{ userinfo.level == 1? "普通" : "VIP"}}</el-descriptions-item>
-            <el-descriptions-item label="简介"> {{ userinfo.bio }}</el-descriptions-item>
+            <el-descriptions-item label="用户级别">{{ userinfo.userLevel == 1? "普通" : "VIP"}}</el-descriptions-item>
+            <el-descriptions-item label="简介"> {{ userinfo.userIntro }}</el-descriptions-item>
             <el-descriptions-item label="注册时间">{{ userinfo.registerTime }}</el-descriptions-item>
         </el-descriptions>
       </el-card>
@@ -50,6 +50,7 @@ export default {
     
   },
   created() {
+    console.log(this.user);
     this.userinfo = {...this.user};
   },
 }

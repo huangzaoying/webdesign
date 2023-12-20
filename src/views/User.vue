@@ -1,6 +1,6 @@
 <template>
   <div class="manage">
-    <el-dialog
+    <!-- <el-dialog
       title="提示"
       :visible.sync="dialogVisible"
       width="50%"
@@ -37,7 +37,7 @@
         <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <div class="manage-header">
       <el-button @click="handleAdd" type="primary"> + 新增 </el-button>
       <!-- form搜索区域 -->
@@ -51,16 +51,15 @@
       </el-form>
     </div>
     <div class="common-tabel">
-      <el-table stripe height="90%" :data="tableData" style="width: 100%">
+      <el-table stripe height="90%" :data="userList" style="width: 100%">
+        
+        <el-table-column prop="userId" label="用户ID"> </el-table-column>
+        <el-table-column prop="userName" label="用户名"> </el-table-column>
         <el-table-column prop="name" label="姓名"> </el-table-column>
-        <el-table-column prop="sex" label="性别">
-          <template slot-scope="scope">
-            <span>{{ scope.row.sex == 1 ? "男" : "女" }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="age" label="年龄"> </el-table-column>
-        <el-table-column prop="birth" label="出生日期"> </el-table-column>
-        <el-table-column prop="addr" label="地址"> </el-table-column>
+        <el-table-column prop="idType" label="证件类型"> </el-table-column>
+        <el-table-column prop="idNumber" label="证件号"> </el-table-column>
+        <el-table-column prop="phoneNumber" label="电话号码"> </el-table-column>
+        <el-table-column prop="userLevel" label="用户级别"> </el-table-column>
         <el-table-column prop="addr" label="地址">
           <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)"
@@ -93,21 +92,22 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      form: {
+      userList: [],
+      a: {
+        userId: null,
+        userName: "",
+        passWord: "",
+        userType: "",
         name: "",
-        age: "",
-        sex: "",
-        birth: "",
-        addr: "",
+        idType: "",
+        idNumber: "",
+        phoneNumber: "",
+        userLevel: "",
+        bio: "",
+        city: "",
+        registerTime: null,
+        updateTime: null,
       },
-      rules: {
-        name: [{ required: true, message: "请输入姓名" }],
-        age: [{ required: true, message: "请输入年龄" }],
-        sex: [{ required: true, message: "请选择性别" }],
-        birth: [{ required: true, message: "请选择出生日期" }],
-        addr: [{ required: true, message: "请输入地址" }],
-      },
-      tableData: [],
       modalType: 0, // 0表示新增的弹窗， 1表示编辑
       total: 0, //当前的总条数
       pageData: {
@@ -120,39 +120,7 @@ export default {
     };
   },
   methods: {
-    // 提交用户表单
-    submit() {
-      this.$refs.form.validate((valid) => {
-        // console.log(valid, 'valid')
-        if (valid) {
-          // 后续对表单数据的处理
-          if (this.modalType === 0) {
-            addUser(this.form).then(() => {
-              // 重新获取列表的接口
-              this.getList();
-            });
-          } else {
-            editUser(this.form).then(() => {
-              // 重新获取列表的接口
-              this.getList();
-            });
-          }
-
-          // 清空表单的数据
-          this.$refs.form.resetFields();
-          // 关闭弹窗
-          this.dialogVisible = false;
-        }
-      });
-    },
-    // 弹窗关闭的时候
-    handleClose() {
-      this.$refs.form.resetFields();
-      this.dialogVisible = false;
-    },
-    cancel() {
-      this.handleClose();
-    },
+    
     handleEdit(row) {
       this.modalType = 1;
       this.dialogVisible = true;

@@ -40,19 +40,19 @@
             {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column prop="publisherUserId" label="发布用户"></el-table-column>
+        <el-table-column prop="userId" label="发布用户"></el-table-column>
         <el-table-column prop="destinationType" label="去处类型"></el-table-column>
-        <el-table-column prop="themeName" label="请求主题"></el-table-column>
-        <el-table-column prop="maxPrice" label="最高单价"></el-table-column>
-        <el-table-column prop="endTime" label="结束日期"></el-table-column>
+        <el-table-column prop="requestTheme" label="请求主题"></el-table-column>
+        <el-table-column prop="highestPrice" label="最高单价"></el-table-column>
+        <el-table-column prop="requestEndDate" label="结束日期"></el-table-column>
         <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="修改时间"></el-table-column>
+        <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
         <el-table-column prop="status" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
-              <el-icon v-if="scope.row.state === 1" name="check"></el-icon>
-              <el-icon v-else-if="scope.row.state === 2" name="time"></el-icon>
-              <el-icon v-else-if="scope.row.state === 3" name="close"></el-icon>
+              <el-icon v-if="scope.row.status === 1" name="check"></el-icon>
+              <el-icon v-else-if="scope.row.status === 2" name="time"></el-icon>
+              <el-icon v-else-if="scope.row.status === 3" name="close"></el-icon>
               <el-icon v-else name="warning"></el-icon>
             </div>
           </template>
@@ -172,8 +172,8 @@ export default {
   },
   methods: {
     showDetails(row) {
-      this.selectedRowDetails.describe = row.description;
-      this.selectedRowDetails.images = row.introImages || [];
+      this.selectedRowDetails.describe = row.requestDescription;
+      this.selectedRowDetails.images = row.destinationImage || [];
       this.selectedRowDetails.images = [
         "user.png",
         "user-default.png",
