@@ -11,7 +11,6 @@ const http = axios.create({
 http.interceptors.request.use(function (req) {
   // 在发送请求之前做些什么
   const headers = req.headers;
-  // const { token = "" } = storage.getItem('userInfo') || {};
   if (!headers.Authorization) headers.Authorization = 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7Il9pZCI6IjYxYTM3NWNkYzAxYTdmYmEwN2I2MWI3NyIsInVzZXJJZCI6MTAwMDEsInVzZXJOYW1lIjoiamFzb24iLCJ1c2VyRW1haWwiOiJqYXNvbkBqYXNvbi5jb20iLCJkZXB0SWQiOlsiNjAxNjcwNTljOTAyN2I3ZDJjNTIwYTYxIiwiNjAxNjczNDVjNmE0NDE3ZjJkMjc1MDZmIl0sInN0YXRlIjoiMSIsInJvbGUiOjAsInJvbGVMaXN0IjpbIjYwMTgwYjA3YjFlYWVkNmM0NWZiZWJkYiJdfSwiaWF0IjoxNjY5MTg5OTMzLCJleHAiOjE2NjkxOTM1MzN9.FYCAxKkXdWco1-RsZ87iTvsdMZGa3dpgcIGlMz9ScM0';
   return req;
   return config;
