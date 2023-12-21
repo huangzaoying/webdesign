@@ -8,7 +8,7 @@ import store from './store'
 import './assets/fonts/iconfont.css'
 // 导入全局样式表
 import './assets/css/global.css'
-import './api/mock'
+// import './api/mock'
 import Cookie from 'js-cookie'
 
 Vue.config.productionTip = false
