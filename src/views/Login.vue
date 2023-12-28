@@ -31,7 +31,12 @@
       <span v-text="currentTime"></span>
     </div>
     <el-dialog title="注册" :visible.sync="dialogVisible" width="40%">
-      <el-form :model="userInfo" label-width="80px" :rules="registerRules">
+      <el-form
+        :model="userInfo"
+        label-width="80px"
+        :rules="registerRules"
+        ref="userInfo"
+      >
         <el-form-item label="用户名" prop="userName">
           <el-input v-model="userInfo.userName"></el-input>
         </el-form-item>
@@ -72,27 +77,24 @@
   </div>
 </template>
 <script>
-// eslint-disable-next-line no-unused-vars
-import Mock from "mockjs";
 import Cookie from "js-cookie";
 import menu from "@/assets/menu.json";
 import admin from "@/assets/admin.json";
-import { login, register, getMenu } from "@/api";
+import { login, register } from "@/api";
 import provincesData from "@/assets/city.json";
-import info from "@/assets/info.json";
-import go from "@/assets/go.json";
+import moment from "moment";
 export default {
   data() {
     return {
       dialogVisible: false,
       userInfo: {
-        userName: "",
-        password: "",
-        realName: "",
-        idType: "", // 0 身份证 1 其他
-        idNumber: "",
-        phoneNumber: "",
-        registerCity: "",
+        userName: "xiaoxiao",
+        password: "Hjh123456",
+        realName: "张三",
+        idType: "身份证", // 0 身份证 1 其他
+        idNumber: "123454367678758",
+        phoneNumber: "13035584062",
+        registerCity: "guangdong-guangzhou",
         userIntro: "暂时没有更多了",
       },
       selectedLocation: [],
@@ -100,7 +102,7 @@ export default {
       currentTime: new Date().toLocaleString(),
       form: {
         userName: "xiaoxiao",
-        password: "xiaoxiao",
+        password: "Hjh123456",
       },
       rules: {
         userName: [{ required: true, trigger: "blur", message: "请输入账号" }],
@@ -156,38 +158,51 @@ export default {
     login() {
       this.$refs.form.validate((valid) => {
         if (valid) {
-          getMenu(this.form).then(({ data }) => {
-            // login(this.form).then(({data}) => {
-            if (data.code === 200) {
-              Cookie.set("token", data.data.token); // token信息存入cookie用于不同页面间的通信
+          let sendData = {
+            username: this.form.userName,
+            password: this.form.password,
+          };
+          login(sendData).then((respond) => {
+            if (true || respond.status === 200) {
+              Cookie.set("token", respond.status); // token信息存入cookie用于不同页面间的通信
               this.$store.commit(
                 "setMenu",
                 this.form.userName === "admin" ? admin : menu
               ); // 获取菜单的数据，存入store中
-              // this.$store.commit("setUser", data.data.user);// 获取用户信息，存入store中
+              // this.$store.commit("setUser", respond.data);
               this.$store.commit("addMenu", this.$router);
               this.$message.success("登录成功!");
               if (this.form.userName === "admin")
                 this.$router.push("/admin/user");
-              else 
-                this.$router.push("/home");
+              else this.$router.push("/home");
             } else {
-              this.$message.error(data.data.message);
+              this.$message.error("登陆失败");
             }
+          })
+          .catch(error => {
+            this.$message.error(error);
           });
         }
       });
     },
     register() {
       this.$refs.userInfo.validate((valid) => {
+        let time = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+        let sendData = {
+          ...this.userInfo,
+          userType: "USER",
+          registerTime: time,
+          modifyTime: time,
+          userLevel: "NORMAL",
+        };
         if (valid) {
-          register(this.userInfo).then((data) => {
-            console.log(data);
-            if (data.code === 200) {
-              this.$message.success(data.data.message);
-            } else {
-              this.$message.success(data.data.message);
+          register(sendData).then((data) => {
+            if (data.status === 200) {
+              this.$message.success(data.data);
             }
+          })
+          .catch(error => {
+            this.$message.error(error);
           });
         }
       });
@@ -199,9 +214,7 @@ export default {
     }, 1000);
   },
   destroyed() {
-    this.$store.commit("setUser", info); // 后面删掉
-    console.log(go);
-    this.$store.commit("addRequest", go);
+    // this.$store.commit("addRequest", go);
   },
 };
 </script>

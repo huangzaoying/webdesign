@@ -12,50 +12,77 @@ export const updateUser = (id, data) => {
     return http.put('/users/updateUser/' + id, data)
 }
 export const getUser = (data) => {
-    return http.get('/users/getUser', qs.stringify(data))
+    return http.get('/users/getUser?userId='+data)
+}
+export const getAllUser = () => {
+    return http.get('/users/getAll')
 }
 
-
-// request 的四个接口
+// request 的接口
 
 export const addRequest = (data) => {
-    return http.post('/requests/add', qs.stringify(data))
+    return http.post('/requests/add', data)
 }
 
-export const getRequest = (data) => {
-    return http.get('/requests/getSpecial', qs.stringify(data))
+export const getRequest = (id) => {
+    return http.get('/requests/getList/' + id)
 }
 
-export const getRequestAdmin = (data) => {
-    return http.get('/requests/getList', qs.stringify(data))
+export const getRequestByType = (type) => {
+    return http.get('/requests/getSpecial?type=' +  type)
+}
+export const getRequestByName = (name) => {
+    return http.get('/requests/getSpecial?name=' +  name)
+}
+export const getRequestAll = () => {
+    return http.get('/requests/getSpecial')
 }
 
-export const updateRequest = (data) => {
-    return http.put('/requests/update', qs.stringify(data))
+export const updateRequest = (id, data) => {
+    return http.put('/requests/update/' + id, data)
 }
 
-export const deleteRequest = (data) => {
-    return http.delete('/requests/delete', qs.stringify(data))
+export const deleteRequest = (id) => {
+    return http.delete('/requests/delete/' + id)
 }
 
-// response 的四个接口
+export const getRequestsByCity = (city) => {
+    return http.get('/requests/getCity/' + city)
+}
+
+export const getRequestsResponder = (requestId) => {
+    return http.get('/requests/getResponder/' + requestId)
+}
+
+export const getRequestsResponse = (requestId) => {    
+    return http.get('/requests/getResponse/' + requestId)
+}
+// response 的接口
 
 export const addResponse = (data) => {
-    return http.post('/responses/add', qs.stringify(data))
+    return http.post('/responses/add', data)
 }
 
-export const getResponse = (data) => {
-    return http.get('/responses/getResponse', qs.stringify(data))
+export const getResponse = (id) => {
+    return http.get('/responses/getResponse/' + id)
 }
 
-export const updateResponse = (data) => {
-    return http.put('/responses/update', qs.stringify(data))
+export const updateResponse = (id, data) => {
+    return http.put('/responses/update/' + id, data)
 }
 
-export const deleteResponse = (data) => {
-    return http.delete('/responses/delete', qs.stringify(data))
+export const deleteResponse = (id) => {
+    return http.delete('/responses/delete/' + id)
 }
-
+export const getAllResponse = () => {
+    return http.get('/responses/getAll')
+}
+// export const getResponseByRequestId = (requestId) => {
+//     return http.get('/responses/getResponse/' + requestId)
+// }
+// export const getResponderByRequestId = (requestId) => {
+//     return http.get('/responses/getResponder/' + requestId)
+// }
 // 分析的接口
 
 export const getAnalysis = (data) => {

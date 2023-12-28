@@ -38,10 +38,10 @@
         <el-button type="primary" @click="submit">确 定</el-button>
       </span>
     </el-dialog> -->
-    <div class="manage-header">
+    <!-- <div class="manage-header">
       <el-button @click="handleAdd" type="primary"> + 新增 </el-button>
-      <!-- form搜索区域 -->
-      <el-form :inline="true" :model="userForm">
+       form搜索区域 -->
+      <!-- <el-form :inline="true" :model="userForm">
         <el-form-item>
           <el-input placeholder="请输入名称" v-model="userForm.name"></el-input>
         </el-form-item>
@@ -49,19 +49,19 @@
           <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </div> --> 
     <div class="common-tabel">
       <el-table stripe height="90%" :data="userList" style="width: 100%">
         
         <el-table-column prop="userId" label="用户ID"> </el-table-column>
         <el-table-column prop="userName" label="用户名"> </el-table-column>
-        <el-table-column prop="name" label="姓名"> </el-table-column>
+        <el-table-column prop="realName" label="姓名"> </el-table-column>
         <el-table-column prop="idType" label="证件类型"> </el-table-column>
         <el-table-column prop="idNumber" label="证件号"> </el-table-column>
         <el-table-column prop="phoneNumber" label="电话号码"> </el-table-column>
         <el-table-column prop="userLevel" label="用户级别"> </el-table-column>
-        <el-table-column prop="addr" label="地址">
-          <template slot-scope="scope">
+        <el-table-column prop="registerCity" label="地址">
+          <!-- <template slot-scope="scope">
             <el-button size="mini" @click="handleEdit(scope.row)"
               >编辑</el-button
             >
@@ -71,8 +71,10 @@
               @click="handleDelete(scope.row)"
               >删除</el-button
             >
-          </template>
+          </template> -->
         </el-table-column>
+        <el-table-column prop="registerTime" label="注册时间"> </el-table-column>
+        <el-table-column prop="modifyTime" label="修改时间"> </el-table-column>
       </el-table>
       <div class="pager">
         <el-pagination
@@ -86,28 +88,13 @@
   </div>
 </template>
 <script>
-import { getUser, addUser, editUser, delUser } from "../api";
+import { getAllUser } from "../api";
 import axios from "axios";
 export default {
   data() {
     return {
       dialogVisible: false,
       userList: [],
-      a: {
-        userId: null,
-        userName: "",
-        passWord: "",
-        userType: "",
-        name: "",
-        idType: "",
-        idNumber: "",
-        phoneNumber: "",
-        userLevel: "",
-        bio: "",
-        city: "",
-        registerTime: null,
-        updateTime: null,
-      },
       modalType: 0, // 0表示新增的弹窗， 1表示编辑
       total: 0, //当前的总条数
       pageData: {
@@ -127,47 +114,13 @@ export default {
       // 注意需要对当前行数据进行深拷贝，否则会出错
       this.form = JSON.parse(JSON.stringify(row));
     },
-    handleDelete(row) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          delUser({ id: row.id }).then(() => {
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-            // 重新获取列表的接口
-            this.getList();
-          });
-        })
-        .catch(() => {
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
-    },
-    handleAdd() {
-      this.modalType = 0;
-      this.dialogVisible = true;
-    },
+
     // 获取列表的数据
     getList() {
-      // 获取的列表的数据
-      // getUser({ params: { ...this.userForm, ...this.pageData } }).then(
-      //   ({ data }) => {
-      //     this.tableData = data.list;
-
-      //     this.total = data.count || 0;
-      //   }
-      // );
-      getUser().then(({ data }) => {
-        this.tableData = data.list;
-
-        this.total = data.count || 0;
+      getAllUser().then(({ data }) => {
+        console.log(typeof data);
+        this.userList = [...data];
+        this.total = this.userList.length || 0;
       });
     },
     // 选择页码的回调函数

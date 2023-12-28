@@ -9,6 +9,8 @@ import Login from '../views/Login.vue'
 import PageThree from '../views/PageThree.vue'
 import PageFour from '../views/PageFour.vue'
 import Count from '../views/Count.vue'
+import Come from '../views/Come.vue'
+import Go from '../views/Go.vue'
 Vue.use(VueRouter)
 // 1. 创建路由组件
 // 2. 将路由与组件进行映射
@@ -31,6 +33,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
+    mode: 'history',
     routes
 })
 

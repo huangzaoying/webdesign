@@ -63,7 +63,7 @@
         <el-table-column label="操作" width="180px" align="center">
           <template v-slot="scope">
             <div class="button-container">
-              <el-button
+              <!-- <el-button
                 type="primary"
                 icon="el-icon-edit"
                 size="mini"
@@ -74,7 +74,7 @@
                 icon="el-icon-delete"
                 size="mini"
                 @click="deleteRespond(scope.row)"
-              ></el-button>
+              ></el-button> -->
               <el-button
                 type="info"
                 icon="el-icon-message"
@@ -156,7 +156,7 @@
   
   <script>
 import { mapState } from "vuex";
-import { getResponse, updateResponse, deleteResponse } from "@/api";
+import { getAllResponse, updateResponse, deleteResponse } from "@/api";
 export default {
   data() {
     return {
@@ -225,7 +225,7 @@ export default {
     }),
   },
   created() {
-    this.getMyResponse();
+    this.getAllResponse();
     // console.log(this.come.requests)
     // this.list = [...this.come.requests];
   },
@@ -262,8 +262,8 @@ export default {
       console.log("已选择的文件:", file);
       console.log("已选择的文件名:", file.name);
     },
-    getMyResponse() {
-      getResponse(this.$store.state.user.userId).then((res) => {
+    getAllResponse() {
+      getAllResponse(this.$store.state.user.userId).then((res) => {
         if (res.status === 200) {
           this.list = res.data;
           this.$store.dispatch("addRespond", res.data);

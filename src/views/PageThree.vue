@@ -4,25 +4,25 @@
       <el-row :gutter="20">
         <el-col :span="7">
           <el-input
-            placeholder="输入关键字搜索"
+            placeholder="输入主题搜索"
             clearable
             v-model="query"
-            @clear="a = true"
+            @clear="getRequestsBycity"
           >
             <el-button
               slot="append"
               icon="el-icon-search"
-              @click="search(query)"
+              @click="searchByName(query)"
             ></el-button>
           </el-input>
         </el-col>
-        <!--排序下拉框-->
         <el-col :span="4">
           <el-select
             v-model="value"
             filterable
             :clearable="true"
-            @change="sort($event)"
+            @clear="getRequestsBycity"
+            @change="searchByType(value)"            
           >
             <el-option
               v-for="item in options"
@@ -56,13 +56,21 @@
         <el-table-column prop="status" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
-              <el-icon v-if="scope.row.status === 1" name="check"></el-icon>
-              <el-icon v-else-if="scope.row.status === 2" name="time"></el-icon>
+              <el-icon v-if="scope.row.status === 'DONE'" name="check"
+                >完成</el-icon
+              >
+              <!--完成-->
+              <el-icon v-else-if="scope.row.status === 'PAUSE'" name="time"
+                >待响应</el-icon
+              >
+              <!--待响应-->
               <el-icon
-                v-else-if="scope.row.status === 3"
+                v-else-if="scope.row.status === 'CANCEL'"
                 name="close"
               ></el-icon>
-              <el-icon v-else name="warning"></el-icon>
+              <!--取消-->
+              <el-icon v-else name="warning">过期</el-icon>
+              <!--过期-->
             </div>
           </template>
         </el-table-column>
@@ -127,7 +135,7 @@
         <el-upload
           class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action=""
           multiple
         >
           <i class="el-icon-upload"></i>
@@ -150,18 +158,16 @@
   <script>
 import moment from "moment";
 import { mapState } from "vuex";
+import { getRequest, getRequestsByCity, getRequestByType, getRequestByName, addResponse} from "@/api";
 export default {
   data() {
     return {
       list: [],
       response: {
-        responseId: null,
         requestId: null,
         responderId: null,
         responseDescription: "",
-        responseImage: [],
-        createdTime: null,
-        modifyTime: null,
+        responseImage: null,
         status: 0, // 默认状态为 "待接受" 1 "已接受" 2 "已拒绝" 3 "取消"
       },
       currentPage: 1,
@@ -225,11 +231,53 @@ export default {
     }),
   },
   created() {
+    this.getRequestsBycity();
+    // this.getRequestsByCity();
     this.list = [...this.go.requests];
   },
   methods: {
+    getRequestsBycity() {
+      getRequestsByCity(this.$store.state.user.registerCity)
+        .then((res) => {
+          if (res.status === 200) {
+            this.list = res.data;
+            this.$message.success("获取成功");
+            this.$store.dispatch("addRequest", res.data);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
+    },
+    searchByName(value){
+      getRequestByName(value)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.list = res.data;
+            this.$store.dispatch("addRequest", res.data);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
+    },
+    searchByType(value) {
+      getRequestByType(value)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.list = res.data;
+            this.$store.dispatch("addRequest", res.data);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
+    },
+
     showDetails(row) {
-      this.selectedRowDetails.describe = row.describe;
+      this.selectedRowDetails.describe = row.requestDescription;
       this.selectedRowDetails.images = row.images || [];
       this.dialogTableVisible = true;
     },
@@ -245,13 +293,21 @@ export default {
       this.response.requestId = row.requestId;
     },
     submitResponse() {
-      this.response.createdTime = this.response.modifyTime = new Date();
       this.response.responderId = this.$store.state.user.userId;
       this.response.status = 0;
-      
+      this.response.responseImage = "";
       console.log(this.response);
-
-      this.dialogVisible = false;
+      addResponse(this.response)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.$message.success("提交成功");
+            this.dialogVisible = false;
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
     },
   },
 };

@@ -18,12 +18,16 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="登录密码">
+          <!-- <el-form-item label="登录密码">
             <el-input
               v-model="userInfo.password"
               disabled
               type="password"
             ></el-input>
+          </el-form-item> -->
+          <!-- <el-col :span="12"> -->
+          <el-form-item label="用户级别">
+            <el-input v-model="userInfo.userLevel" disabled></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -58,24 +62,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="用户级别">
-            <el-input v-model="userInfo.userLevel" disabled></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
           <el-form-item label="注册城市">
             <el-input v-model="userInfo.registerCity" disabled></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="用户简介">
-            <el-input
-              v-model="userInfo.userIntro"
-              type="textarea"
-              disabled
-            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -91,14 +79,26 @@
           </el-form-item>
         </el-col>
       </el-row>
+      <el-row>
+        <el-col :span="20">
+          <el-form-item label="用户简介">
+            <el-input
+              v-model="userInfo.userIntro"
+              type="textarea"
+              disabled
+            ></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      
     </el-form>
     <el-dialog title="修改信息" :visible.sync="dialogVisible" width="50%">
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item label="联系电话" prop="phoneNumber">
           <el-input v-model="form.phoneNumber"></el-input>
         </el-form-item>
-        <el-form-item label="用户简介" prop="bio">
-          <el-input v-model="form.bio" type="textarea"></el-input>
+        <el-form-item label="用户简介" prop="userIntro">
+          <el-input v-model="form.userIntro" type="textarea"></el-input>
         </el-form-item>
         <el-form-item label="登录密码" prop="password">
           <el-input v-model="form.password" type="password"></el-input>
@@ -109,7 +109,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm('userInfo')"
+        <el-button type="primary" @click="submitForm"
           >确 定</el-button
         >
       </span>
@@ -120,6 +120,7 @@
 <script>
 import form from "element-ui/packages/form";
 import { mapState } from "vuex";
+import {updateUser} from '@/api';
 
 export default {
   data() {
@@ -128,7 +129,7 @@ export default {
       userInfo: {},
       form: {
         phoneNumber: "",
-        bio: "",
+        userIntro: "",
         password: "",
         repassword: "",
       },
@@ -141,7 +142,7 @@ export default {
             trigger: "blur",
           },
         ],
-        bio: [{ required: true, message: "请输入个人简介", trigger: "blur" }],
+        userIntro: [{ required: true, message: "请输入个人简介", trigger: "blur" }],
         password: [{ required: true, trigger: "blur", message: "请输入密码" }],
       },
     };
@@ -163,24 +164,29 @@ export default {
             });
             return false;
           }
-          this.$message({
-            type: "success",
-            message: "修改成功",
+          const sendData = {
+            phoneNumber: this.form.phoneNumber,
+            userIntro: this.form.userIntro,
+            password: this.form.password,
+          };
+          // console.log(sendData);
+          // console.log(this.user.userId);
+          updateUser(this.user.userId, sendData).then((data) => {
+            if (data.status === 200) {
+              this.$message.success(data.data);
+            }
+          })
+          .catch(error => {
+            this.$message.error(error);
           });
           this.dialogVisible = false;
           this.userInfo.phoneNumber = this.form.phoneNumber;
-          this.userInfo.bio = this.form.bio;
+          this.userInfo.userIntro = this.form.userIntro;
           this.userInfo.password = this.form.password;
           this.$store.commit("setPhoneNumber", this.form.phoneNumber);
-          this.$store.commit("setBio", this.form.bio);
+          this.$store.commit("setUserIntro", this.form.userIntro);
           this.$store.commit("setPassword", this.form.password);
-        } else {
-          this.$message({
-            type: "error",
-            message: "修改失败",
-          });
-          return false;
-        }
+        } 
       });
     },
   },

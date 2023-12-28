@@ -3,31 +3,35 @@ const store = {
         responds: []
     },
     mutations: {
-        addItem(state, item) {
-            state.responds.push(item);
+        addRespond(state, any) {
+            let temp = []
+            any.forEach(respond => {
+                temp.push(respond);
+            });
+            state.responds = temp
         },
-        deleteItem(state, id) {
+        deleteRespond(state, id) {
             const index = state.responds.findIndex(item => item.id === id);
             if (index !== -1) {
                 state.responds.splice(index, 1);
             }
         },
-        updateItem(state, updatedItem) {
-            const index = state.responds.findIndex(item => item.id === updatedItem.id);
+        updateRespond(state, updatedRespond) {
+            const index = state.responds.findIndex(item => item.id === updatedRespond.id);
             if (index !== -1) {
-                state.responds.splice(index, 1, updatedItem);
+                state.responds.splice(index, 1, updatedRespond);
             }
         }
     },
     actions: {
-        addItem({ commit }, item) {
-            commit('addItem', item);
+        addRespond({ commit }, item) {
+            commit('addRespond', item);
         },
-        deleteItem({ commit }, id) {
-            commit('deleteItem', id);
+        deleteRespond({ commit }, id) {
+            commit('deleteRespond', id);
         },
-        updateItem({ commit }, updatedItem) {
-            commit('updateItem', updatedItem);
+        updateRespond({ commit }, updatedRespond) {
+            commit('updateRespond', updatedRespond);
         }
     },
 };

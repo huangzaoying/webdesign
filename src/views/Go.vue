@@ -1,168 +1,510 @@
 <template>
-    <div class="manage">
-      <div class="manage-header">
-        <el-button @click="handleAdd" type="primary"> + 新增 </el-button>
-        <!-- form搜索区域 -->
-        <el-form :inline="true" :model="userForm">
-          <el-form-item>
-            <el-input placeholder="请输入名称" v-model="userForm.name"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">查询</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div class="common-tabel">
-        <el-table stripe height="90%" :data="userList" style="width: 100%">
-          
-          <el-table-column prop="userId" label="用户ID"> </el-table-column>
-          <el-table-column prop="userName" label="用户名"> </el-table-column>
-          <el-table-column prop="name" label="姓名"> </el-table-column>
-          <el-table-column prop="idType" label="证件类型"> </el-table-column>
-          <el-table-column prop="idNumber" label="证件号"> </el-table-column>
-          <el-table-column prop="phoneNumber" label="电话号码"> </el-table-column>
-          <el-table-column prop="userLevel" label="用户级别"> </el-table-column>
-          <el-table-column prop="addr" label="地址">
-            <template slot-scope="scope">
-              <el-button size="mini" @click="handleEdit(scope.row)"
-                >编辑</el-button
-              >
-              <el-button
-                type="danger"
-                size="mini"
-                @click="handleDelete(scope.row)"
-                >删除</el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-        <div class="pager">
-          <el-pagination
-            layout="prev, pager, next"
-            :total="total"
-            @current-change="handlePage"
+  <div>
+    <el-card class="box-card">
+      <el-row :gutter="20">
+        <el-col :span="7">
+          <el-input
+            placeholder="输入主题搜索"
+            clearable
+            v-model="query"
+            @clear="getMyResquest"
           >
-          </el-pagination>
-        </div>
-      </div>
-    </div>
-  </template>
-  <script>
-  import { getUser, addUser, editUser, delUser } from "../api";
-  import axios from "axios";
-  export default {
-    data() {
-      return {
-        dialogVisible: false,
-        userList: [],
-        a: {
-          userId: null,
-          userName: "",
-          passWord: "",
-          userType: "",
-          name: "",
-          idType: "",
-          idNumber: "",
-          phoneNumber: "",
-          userLevel: "",
-          bio: "",
-          city: "",
-          registerTime: null,
-          updateTime: null,
-        },
-        modalType: 0, // 0表示新增的弹窗， 1表示编辑
-        total: 0, //当前的总条数
-        pageData: {
-          page: 1,
-          limit: 10,
-        },
-        userForm: {
-          name: "",
-        },
-      };
-    },
-    methods: {
-      
-      handleEdit(row) {
-        this.modalType = 1;
-        this.dialogVisible = true;
-        // 注意需要对当前行数据进行深拷贝，否则会出错
-        this.form = JSON.parse(JSON.stringify(row));
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="searchByName(query)"
+            ></el-button>
+          </el-input>
+        </el-col>
+        <el-col :span="4">
+          <el-select
+            v-model="value"
+            filterable
+            :clearable="true"
+            @clear="getMyResquest"
+            @change="searchByType(value)"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-table :data="displayedData" stripe style="width: 100%" border>
+        <el-table-column label="#">
+          <template slot-scope="scope">
+            {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="userId" label="发布用户"></el-table-column>
+        <el-table-column
+          prop="destinationType"
+          label="去处类型"
+        ></el-table-column>
+        <el-table-column prop="requestTheme" label="请求主题"></el-table-column>
+        <el-table-column prop="highestPrice" label="最高单价"></el-table-column>
+        <el-table-column
+          prop="requestEndDate"
+          label="结束日期"
+        ></el-table-column>
+        <el-table-column prop="createTime" label="创建时间"></el-table-column>
+        <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
+        <el-table-column prop="status" label="状态" align="center">
+          <template slot-scope="scope">
+            <div style="font-size: 20px" @click="checkResponse(scope.row)">
+              <el-icon v-if="scope.row.status === 'DONE'" name="check"
+                >完成</el-icon
+              >
+              <!--完成-->
+              <el-icon v-else-if="scope.row.status === 'PAUSE'" name="time"
+                >待响应</el-icon
+              >
+              <!--待响应-->
+              <el-icon
+                v-else-if="scope.row.status === 'CANCEL'"
+                name="close"
+              ></el-icon>
+              <!--取消-->
+              <el-icon v-else name="warning">过期</el-icon>
+              <!--过期-->
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center">
+          <template v-slot="scope">
+            <el-button
+              type="info"
+              icon="el-icon-message"
+              circle
+              @click="showDetails(scope.row)"
+            >
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <el-pagination
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :page-sizes="[5, 9, 13, 15]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="totalItems"
+      >
+      </el-pagination>
+    </el-card>
+    <el-dialog :visible.sync="dialogTableVisible" title="详情信息" width="50%">
+      <el-card>
+        <el-descriptions :column="1">
+          <el-descriptions-item label="请求描述">{{
+            selectedRowDetails.describe
+          }}</el-descriptions-item>
+          <el-descriptions-item label="图片介绍">
+            <div style="display: flex; flex-wrap: wrap">
+              <el-image
+                v-for="(image, index) in selectedRowDetails.images"
+                :key="index"
+                :src="require('@/assets/images/' + image)"
+                style="flex: 0 0 calc(50% - 10px); margin: 5px"
+              ></el-image>
+            </div>
+          </el-descriptions-item>
+        </el-descriptions>
+      </el-card>
+    </el-dialog>
+    <el-dialog
+      title="响应信息"
+      :visible="dialogVisible"
+      @close="closeResponseDialog"
+    >
+      <el-row>
+        <el-col
+          :span="24"
+          v-for="(response, index) in paginatedResponseList"
+          :key="index"
+        >
+          <el-card>
+            <el-form :model="response" label-width="100px">
+              <el-form :model="response" label-width="100px">
+                <el-row>
+                  <el-col :span="12">
+                    <el-form-item label="用户名">
+                      <el-input v-model="response.userName" disabled></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="用户级别">
+                      <el-input
+                        v-model="response.userLevel"
+                        disabled
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="12">
+                    <el-form-item label="用户类型">
+                      <el-input v-model="response.userType" disabled></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="用户姓名">
+                      <el-input v-model="response.realName" disabled></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="12">
+                    <el-form-item label="手机号码">
+                      <el-input
+                        v-model="response.phoneNumber"
+                        disabled
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="12">
+                    <el-form-item label="注册城市">
+                      <el-input
+                        v-model="response.registerCity"
+                        disabled
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="20">
+                    <el-form-item label="用户简介">
+                      <el-input
+                        v-model="response.userIntro"
+                        type="textarea"
+                        disabled
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+                <el-row type="flex" justify="center">
+                  <el-col :span="4">
+                    <el-button
+                      type="success"
+                      icon="el-icon-check"
+                      circle
+                      @click="acceptResponse(response)"
+                    ></el-button>
+                  </el-col>
+                  <el-col :span="4">
+                    <el-button
+                      type="danger"
+                      icon="el-icon-close"
+                      circle
+                      @click="rejectResponse(response)"
+                    ></el-button>
+                  </el-col>
+                </el-row>
+              </el-form>
+            </el-form>
+          </el-card>
+        </el-col>
+      </el-row>
+      <el-pagination
+        :current-page="currentpage"
+        :page-size="perPage"
+        :total="responseList.length"
+        @current-change="handlePageChange"
+      ></el-pagination>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { mapState } from "vuex";
+import {
+  addRequest,
+  getRequest,
+  updateRequest,
+  deleteRequest,
+  getRequestByType,
+  getRequestByName,
+  getUser,
+  getResponseByRequestId,
+  getResponderByRequestId,
+  getRequestAll
+} from "@/api";
+export default {
+  data() {
+    return {
+      dialogVisible: false, // 控制对话框的显示状态
+      userData: {}, // 保存用户信息的对象
+      list: [],
+      currentPage: 1,
+      pageSize: 5,
+      query: "",
+      dialogTableVisible: false,
+      selectedRowDetails: {
+        describe: "",
+        images: ["user.png", "user-default.png"],
       },
-      handleDelete(row) {
-        this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+      options: [
+        {
+          value: "全部",
+          label: "全部",
+        },
+        {
+          value: "钓鱼",
+          label: "钓鱼",
+        },
+        {
+          value: "名称",
+          label: "名称",
+        },
+        {
+          value: "老少皆宜休闲",
+          label: "老少皆宜休闲",
+        },
+        {
+          value: "农家院",
+          label: "农家院",
+        },
+        {
+          value: "温泉度假",
+          label: "温泉度假",
+        },
+        {
+          value: "僻静休闲",
+          label: "僻静休闲",
+        },
+        {
+          value: "游乐场",
+          label: "游乐场",
+        },
+        {
+          value: "TypeA",
+          label: "TypeA",
+        },
+      ],
+      value: "全部",
+      responseList: [
+        {
+          userName: "Alice",
+          userLevel: "初级",
+          userType: "普通用户",
+          realName: "Alice Zhang",
+          phoneNumber: "13812345678",
+          registerCity: "北京",
+          userIntro: "热爱旅游和摄影的自由职业者。",
+        },
+        {
+          userName: "Bob",
+          userLevel: "高级",
+          userType: "VIP用户",
+          realName: "Bob Li",
+          phoneNumber: "13987654321",
+          registerCity: "上海",
+          userIntro: "资深软件工程师，对新技术充满好奇。",
+        },
+        {
+          userName: "Alice",
+          userLevel: "初级",
+          userType: "普通用户",
+          realName: "Alice Zhang",
+          phoneNumber: "13812345678",
+          registerCity: "北京",
+          userIntro: "热爱旅游和摄影的自由职业者。",
+        },
+        {
+          userName: "Bob",
+          userLevel: "高级",
+          userType: "VIP用户",
+          realName: "Bob Li",
+          phoneNumber: "13987654321",
+          registerCity: "上海",
+          userIntro: "资深软件工程师，对新技术充满好奇。",
+        },
+      ],
+      perPage: 1, // 每页显示的数量
+      currentpage: 1, // 当前页数
+      responderList: [],
+    };
+  },
+  watch: {
+    go(newValue) {
+      this.list = [...newValue.requests];
+    },
+  },
+  computed: {
+    displayedData() {
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = startIndex + this.pageSize;
+      return this.list.slice(startIndex, endIndex);
+    },
+    totalItems() {
+      return this.list.length;
+    },
+    ...mapState({
+      go: (state) => state.go,
+    }),
+    paginatedResponseList() {
+      const startIndex = (this.currentpage - 1) * this.perPage;
+      const endIndex = startIndex + this.perPage;
+      return this.responseList.slice(startIndex, endIndex);
+    },
+  },
+  created() {
+    this.getMyResquest();
+    // this.list = [...this.go.requests];
+  },
+
+  methods: {
+    getUsername(userId) {
+      getUser(userId)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log(res.data[0].realName);
+            return res.data[0].realName;
+          }
         })
-          .then(() => {
-            delUser({ id: row.id }).then(() => {
-              this.$message({
-                type: "success",
-                message: "删除成功!",
-              });
-              // 重新获取列表的接口
-              this.getList();
-            });
-          })
-          .catch(() => {
-            this.$message({
-              type: "info",
-              message: "已取消删除",
-            });
-          });
-      },
-      handleAdd() {
-        this.modalType = 0;
-        this.dialogVisible = true;
-      },
-      // 获取列表的数据
-      getList() {
-        // 获取的列表的数据
-        // getUser({ params: { ...this.userForm, ...this.pageData } }).then(
-        //   ({ data }) => {
-        //     this.tableData = data.list;
-  
-        //     this.total = data.count || 0;
-        //   }
-        // );
-        getUser().then(({ data }) => {
-          this.tableData = data.list;
-  
-          this.total = data.count || 0;
+        .catch((error) => {});
+    },
+    showResponseDialog() {
+      // getResponderByRequestId(requestId)
+      //   .then((res) => {
+      //     if (res.status === 200) {
+      //       this.responderList = res.data;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     this.$message.error(error);
+      //   });
+      // getResponseByRequestId(requestId)
+      //   .then((res) => {
+      //     if (res.status === 200) {
+      //       this.responseList = res.data;
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     this.$message.error(error);
+      //   });
+      // // 合并响应者和响应信息
+      // const mergedArray = this.responseList.map((response) => {
+      //   const user = this.responderList.find(
+      //     (responder) => response.responderId === responder.userId
+      //   );
+      //   return { ...user, ...response };
+      // });
+      this.dialogVisible = true;
+    },
+    closeResponseDialog() {
+      // 关闭对话框时执行的操作
+      this.dialogVisible = false;
+    },
+    acceptResponse(response) {
+      let requestId = response.requestId;
+      let responseId = response.responserId;
+
+      console.log("接受响应", response);
+      this.responseList.forEach((item) => {
+        if (item !== response) {
+          this.rejectResponse(item);
+        }
+      });
+    },
+    rejectResponse(response) {
+      let requestId = response.requestId;
+      let responseId = response.responserId;
+      
+      console.log("拒绝响应", response);
+    },
+    checkResponse(row) {
+      this.showResponseDialog(row.requestId);
+    },
+    handlePageChange(newPage) {
+      // 当用户切换分页时触发的方法
+      this.currentpage = newPage;
+    },
+    searchByName(value) {
+      getRequestByName(value)
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            this.list = res.data;
+            this.$message.success(res.statusText);
+            this.$store.dispatch("addRequest", res.data);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
         });
-      },
-      // 选择页码的回调函数
-      handlePage(val) {
-        this.pageData.page = val;
-        this.getList(this.pageData);
-      },
-      // 列表的查询
-      onSubmit() {
-        this.getList();
-      },
     },
-    mounted() {
-      this.getList();
+    searchByType(value) {
+      getRequestByType(value)
+        .then((res) => {
+          console.log(123123, res);
+          if (res.status === 200) {
+            this.list = res.data;
+            this.$message.success(res.statusText);
+            this.$store.dispatch("addRequest", res.data);
+          } else {
+            this.$message.error(res.statusText);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
     },
-  };
-  </script>
-  <style lang="less" scoped>
-  .manage {
-    height: 90%;
-    .manage-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .common-tabel {
-      position: relative;
-      height: calc(100% - 62px);
-      .pager {
-        position: absolute;
-        bottom: 0;
-        right: 20px;
+    showDetails(row) {
+      this.selectedRowDetails.describe = row.requestDescription;
+      this.selectedRowDetails.images = row.destinationImage || [];
+      this.dialogTableVisible = true;
+    },
+    handleCurrentChange(newPage) {
+      this.currentPage = newPage;
+    },
+    handleSizeChange(newSize) {
+      this.pageSize = newSize;
+      this.currentPage = 1;
+    },
+    search(query) {
+      if (query) {
+        this.list = this.list.filter((item) => {
+          return item.requestTheme.indexOf(query) > -1;
+        });
+      } else {
+        this.list = [...this.go.requests];
       }
-    }
+    },
+    getMyResquest() {
+      getRequestAll()
+        .then((res) => {
+          if (res.status === 200) {
+            this.list = res.data;
+            // this.$message.success("获取成功");
+            this.$store.dispatch("addRequest", res.data);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
+    },
+  },
+};
+</script>
+
+<style lang="less" scoped>
+.el-table {
+  margin-top: 15px;
+}
+
+.el-card {
+  .el-select {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    padding: 5px;
   }
-  </style>
+}
+</style>

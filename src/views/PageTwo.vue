@@ -1,9 +1,12 @@
 <template>
   <div>
+    <img :src="this.requestData.destinationImage" />
     <el-card class="box-card">
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-button type="primary" @click="showDialog">发布</el-button>
+          <el-button type="primary" @click="dialogVisible = true"
+            >发布</el-button
+          >
         </el-col>
       </el-row>
       <el-table :data="displayedData" stripe style="width: 100%" border>
@@ -28,13 +31,21 @@
         <el-table-column prop="status" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
-              <el-icon v-if="scope.row.status === 1" name="check"></el-icon>
-              <el-icon v-else-if="scope.row.status === 2" name="time"></el-icon>
+              <el-icon v-if="scope.row.status === 'DONE'" name="check"
+                >完成</el-icon
+              >
+              <!--完成-->
+              <el-icon v-else-if="scope.row.status === 'PAUSE'" name="time"
+                >待响应</el-icon
+              >
+              <!--待响应-->
               <el-icon
-                v-else-if="scope.row.status === 3"
+                v-else-if="scope.row.status === 'CANCEL'"
                 name="close"
               ></el-icon>
-              <el-icon v-else name="warning"></el-icon>
+              <!--取消-->
+              <el-icon v-else name="warning">过期</el-icon>
+              <!--过期-->
             </div>
           </template>
         </el-table-column>
@@ -45,13 +56,13 @@
                 type="primary"
                 icon="el-icon-edit"
                 size="mini"
-                @click="updateRequest(scope.row)"
+                @click="updaterequest(scope.row)"
               ></el-button>
               <el-button
                 type="danger"
                 icon="el-icon-delete"
                 size="mini"
-                @click="deleteRequest(scope.row)"
+                @click="deleterequest(scope.row)"
               ></el-button>
               <el-button
                 type="info"
@@ -99,7 +110,7 @@
       title="发布新的请求信息"
       width="40%"
     >
-      <el-form :model="requestData" :rules="formRules" ref="requestDataForm" >
+      <el-form :model="requestData" :rules="formRules" ref="requestDataForm">
         <el-form-item label="去处类型" prop="destinationType">
           <el-input v-model="requestData.destinationType"></el-input>
         </el-form-item>
@@ -116,40 +127,98 @@
 
         <!-- 图片介绍 -->
         <el-form-item label="图片介绍">
-          <!-- 这里添加上传图片组件，或其他适用于图片的组件 -->
-          <el-upload
-            class="upload-demo"
-            drag
-            action="https://jsonplaceholder.typicode.com/posts/"
-            multiple
+          <input
+            type="file"
+            ref="fileInput"
+            style="display: none"
+            @change="handleFileChange"
+          />
+          <el-button type="primary" size="mini" @click="openFileInput"
+            >选择文件</el-button
           >
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">
-              将文件拖到此处，或<em>点击上传</em>
-            </div>
-            <div class="el-upload__tip" slot="tip">
-              只能上传jpg/png文件，且不超过500kb
-            </div>
-          </el-upload>
+          <ul>
+            <li v-for="file in uploadedFiles" :key="file.name">
+              {{ file.name }}
+            </li>
+          </ul>
         </el-form-item>
 
-        <!-- 最高单价 -->
         <el-form-item label="最高单价" prop="highestPrice">
           <el-input v-model="requestData.highestPrice"></el-input>
         </el-form-item>
 
-        <!-- 请求结束日期 -->
         <el-form-item label="请求结束日期" prop="requestEndDate">
           <el-date-picker
             v-model="requestData.requestEndDate"
             align="right"
-            type="date"
+            type="datetime"
             placeholder="请求结束日期"
           ></el-date-picker>
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="submitForm" class="align-right">提交</el-button>
+          <el-button type="primary" @click="submitForm" class="align-right"
+            >提交</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-dialog>
+    <el-dialog
+      :visible.sync="editDialogVisible"
+      title="修改请求信息"
+      width="40%"
+    >
+      <el-form
+        :model="editRequestData"
+        :rules="formRules"
+        ref="editRequestDataForm"
+      >
+        <el-form-item label="去处类型" prop="destinationType">
+          <el-input v-model="editRequestData.destinationType"></el-input>
+        </el-form-item>
+
+        <el-form-item label="请求主题名称" prop="requestTheme">
+          <el-input v-model="editRequestData.requestTheme"></el-input>
+        </el-form-item>
+
+        <el-form-item label="请求描述" prop="requestDescription">
+          <el-input v-model="editRequestData.requestDescription"></el-input>
+        </el-form-item>
+
+        <el-form-item label="图片介绍">
+          <input
+            type="file"
+            ref="fileInput"
+            style="display: none"
+            @change="handleFileChange"
+          />
+          <el-button type="primary" size="mini" @click="openFileInput"
+            >选择文件</el-button
+          >
+          <ul>
+            <li v-for="file in uploadedFiles" :key="file.name">
+              {{ file.name }}
+            </li>
+          </ul>
+        </el-form-item>
+
+        <!-- 最高单价 -->
+        <el-form-item label="最高单价" prop="highestPrice">
+          <el-input v-model="editRequestData.highestPrice"></el-input>
+        </el-form-item>
+
+        <!-- 请求结束日期 -->
+        <el-form-item label="请求结束日期" prop="requestEndDate">
+          <el-date-picker
+            v-model="editRequestData.requestEndDate"
+            align="right"
+            type="datetime"
+            placeholder="请求结束日期"
+          ></el-date-picker>
+        </el-form-item>
+
+        <el-form-item>
+          <el-button type="primary" @click="submitEditForm">保存修改</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -157,76 +226,74 @@
 </template>
 
 <script>
+import moment from "moment";
+import axios from "axios";
 import { mapState } from "vuex";
+import { addRequest, getRequest, updateRequest, deleteRequest } from "@/api";
 export default {
   data() {
     return {
+      uploadedFiles: [],
+      uploadedImageNames: [],
+      uploadedImage: null,
       list: [],
       currentPage: 1,
       pageSize: 5,
-      // 搜索值
       query: "",
       dialogTableVisible: false,
       selectedRowDetails: {
         describe: "",
         images: ["user.png", "user-default.png"],
       },
-      //查找类型
       options: [
         {
-          value: "1",
+          value: "全部",
           label: "全部",
         },
         {
-          value: "2",
+          value: "钓鱼",
           label: "钓鱼",
         },
         {
-          value: "3",
+          value: "名称",
           label: "名称",
         },
         {
-          value: "4",
+          value: "老少皆宜休闲",
           label: "老少皆宜休闲",
         },
         {
-          value: "5",
+          value: "农家院",
           label: "农家院",
         },
         {
-          value: "6",
+          value: "温泉度假",
           label: "温泉度假",
         },
         {
-          value: "7",
+          value: "僻静休闲",
           label: "僻静休闲",
         },
         {
-          value: "8",
+          value: "游乐场",
           label: "游乐场",
         },
+        {
+          value: "TypeA",
+          label: "TypeA",
+        },
       ],
-      value: "1",
+      value: "全部",
       dialogVisible: false,
+
       requestData: {
-        userId: "",
-        destinationType: "",
-        theme: "",
-        description: "",
-        // ...其他属性
-      },
-      requestData: {
-        requestId: 1,
         userId: 123,
-        destinationType: "TypeA",
-        requestTheme: "Theme Example",
+        destinationType: "TypeB",
+        requestTheme: "Theme Fish",
         requestDescription: "Description Example",
         destinationImage: "",
-        highestPrice: 100.5,
-        requestEndDate: new Date(), // Example date
-        createTime: new Date(),
-        modifyTime: new Date(),
-        status: "Pending", // or whatever statuses are applicable
+        highestPrice: 120.5,
+        requestEndDate: null,
       },
       formRules: {
         destinationType: [
@@ -240,7 +307,6 @@ export default {
         ],
         highestPrice: [
           { required: true, message: "最高单价是必填项", trigger: "blur" },
-          { type: "number", message: "最高单价必须为数字", trigger: "blur" },
         ],
         requestEndDate: [
           {
@@ -250,16 +316,23 @@ export default {
           },
         ],
       },
+      editDialogVisible: false,
+      editRequestData: {
+        destinationType: "TypeB",
+        requestTheme: "Theme Fish",
+        requestDescription: "Description Example",
+        destinationImage: "",
+        highestPrice: 120.5,
+        requestEndDate: null,
+      },
     };
   },
   computed: {
-    // 根据当前页和每页显示的数量计算显示的数据
     displayedData() {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
       return this.list.slice(startIndex, endIndex);
     },
-    // 计算总数据量
     totalItems() {
       return this.list.length;
     },
@@ -271,43 +344,151 @@ export default {
     }),
   },
   created() {
-    this.list = [...this.go.requests];
+    this.getMyResquest();
+  },
+  watch: {
+    go(newValue) {
+      this.list = [...newValue.requests];
+    },
   },
   methods: {
-    showDialog() {
-      this.dialogVisible = true;
+    openFileInput() {
+      this.$refs.fileInput.click();
     },
+    handleFileChange(event) {
+      const file = event.target.files[0];
+      // const formData = new FormData();
+      // formData.append("file", file);
+      this.uploadedFiles.push(file);
+      this.uploadedImageNames.push(file.name); // 将文件名添加到数组中
+      // axios
+      //   .post("/api/requests/upload", formData, {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   })
+      //   .then((response) => {
+      //     console.log("上传成功，返回信息：", response);
+      //     let base64Image = btoa(
+      //       new Uint8Array(response.data).reduce(
+      //         (data, byte) => data + String.fromCharCode(byte),
+      //         ""
+      //       )
+      //     );
+      //     this.requestData.destinationImage = 'data:image/jpeg;base64,' + base64Image;
+      //     // this.requestData.destinationImage = response.data;
+      //   })
+      //   .catch((error) => {
+      //     console.error("上传失败，错误信息：", error);
+      //   });
+      console.log("已选择的文件:", file);
+      console.log("已选择的文件名:", file.name);
+    },
+    getMyResquest() {
+      getRequest(this.$store.state.user.userId)
+        .then((res) => {
+          if (res.status === 200) {
+            this.list = res.data;
+            this.$store.dispatch("addRequest", res.data);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
+    },
+
     showDetails(row) {
       this.selectedRowDetails.describe = row.description;
       this.selectedRowDetails.images = row.introImages || [];
-      this.selectedRowDetails.images = [
-        "user.png",
-        "user-default.png",
-        "user-default.png",
-        "user.png",
-      ];
       this.dialogTableVisible = true;
     },
-    // TODO:实现修改功能
-    updateRequest(row) {
-      console.log(row);
+    submitEditForm() {
+      this.$refs.editRequestDataForm.validate((valid) => {
+        if (valid) {
+          const id = this.editRequestData.requestId;
+          this.editRequestData.requestEndDate = moment(
+            this.editRequestData.requestEndDate
+          ).format("YYYY-MM-DD HH:mm:ss");
+          delete this.editRequestData.requestId;
+          this.editRequestData.destinationImage =
+            this.uploadedImageNames.join(",");
+          this.uploadedFiles = [];
+          this.uploadedImageNames = [];
+          updateRequest(id, this.editRequestData)
+            .then((data) => {
+              if (data.status === 200) {
+                this.getMyResquest();
+                this.$refs.editRequestDataForm.resetFields();
+                this.dialogVisible = false;
+                this.$message.success(data.data);
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error);
+            });
+        }
+      });
     },
-    // TODO:实现删除功能
-    deleteRequest(row) {
-      console.log(row);
+    // TODO: 实现修改功能
+    updaterequest(row) {
+      this.editRequestData.requestId = row.requestId;
+      this.editRequestData.userId = this.$store.state.user.userId;
+      this.editRequestData.destinationType = row.destinationType;
+      this.editRequestData.requestTheme = row.requestTheme;
+      this.editRequestData.requestDescription = row.requestDescription;
+      this.editRequestData.highestPrice = row.highestPrice;
+      this.editRequestData.requestEndDate = row.requestEndDate;
+      this.editDialogVisible = true;
     },
-    // TODO:实现增加功能
+    // TODO: 实现删除功能
+    deleterequest(row) {
+      this.$confirm("确定要删除吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          deleteRequest(row.requestId)
+            .then((data) => {
+              if (data.status === 200) {
+                this.$store.dispatch("deleteRequest", row.requestId);
+                this.$message.success(data.data);
+                this.getMyResquest();
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error);
+            });
+        })
+        .catch(() => {
+          // 在这里处理用户点击取消按钮后的逻辑
+        });
+    },
+    // TODO: 实现增加功能
     submitForm() {
-      // 校验表单
       this.$refs.requestDataForm.validate((valid) => {
-        console.log(this.requestData)
         if (valid) {
           this.requestData.userId = this.$store.state.user.userId;
-          this.requestData.createTime = this.requestData.modifyTime = new Date();
-          this.requestData.status = 1; // 待响应
-          // 在这里执行提交逻辑，例如调用API等
+          this.requestData.requestEndDate = moment(
+            this.requestData.requestEndDate
+          ).format("YYYY-MM-DD HH:mm:ss");
+          this.requestData.destinationImage = this.uploadedImageNames.join(",");
+          this.uploadedFiles = [];
+          this.uploadedImageNames = [];
+          console.log("上传的文件名:", this.requestData.destinationImage);
+          console.log("更改后的requestData:", this.requestData);
+          addRequest(this.requestData)
+            .then((data) => {
+              if (data.status === 200) {
+                this.$message.success(data.data);
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error);
+            });
           console.log("Form submitted successfully:", this.requestData);
-          // 关闭对话框
+          this.getMyResquest();
+          this.$refs.requestDataForm.resetFields();
           this.dialogVisible = false;
         } else {
           console.log("Form validation failed.");
@@ -319,7 +500,7 @@ export default {
     },
     handleSizeChange(newSize) {
       this.pageSize = newSize;
-      this.currentPage = 1; // 切换每页显示数量时，回到第一页
+      this.currentPage = 1;
     },
   },
 };

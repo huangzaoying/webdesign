@@ -4,9 +4,11 @@ const state = {
 
 const mutations = {
     addRequest(state, any) {
+        let temp = []
         any.forEach(request => {
-            state.requests.push(request);
+            temp.push(request);
         });
+        state.requests = temp
     },
     updateRequest(state, updatedRequest) {
         const index = state.requests.findIndex(request => request.requestId === updatedRequest.requestId);

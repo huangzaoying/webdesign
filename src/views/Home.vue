@@ -13,16 +13,30 @@
       <el-card style="margin-top: 20px; height: 460px">
         <el-descriptions title="用户信息" :column = "1">
             <el-descriptions-item label="用户名" >{{ userinfo.userName }}</el-descriptions-item>
-            <el-descriptions-item label="用户类型" >{{ userinfo.userType == 1 ? "普通用户" : "管理员" }}</el-descriptions-item>
+            <el-descriptions-item label="用户类型" >{{ userinfo.userType }}</el-descriptions-item>
             <el-descriptions-item label="手机号">{{userinfo.phoneNumber }}</el-descriptions-item>
-            <el-descriptions-item label="用户级别">{{ userinfo.userLevel == 1? "普通" : "VIP"}}</el-descriptions-item>
+            <el-descriptions-item label="用户级别">{{ userinfo.userLevel }}</el-descriptions-item>
             <el-descriptions-item label="简介"> {{ userinfo.userIntro }}</el-descriptions-item>
             <el-descriptions-item label="注册时间">{{ userinfo.registerTime }}</el-descriptions-item>
         </el-descriptions>
       </el-card>
     </el-col>
     <el-col :span="16" style="padding-left: 10px">
-      
+      <el-table :data="displayedData" stripe style="width: 100%" border>
+        <el-table-column prop="userId" label="发布用户"></el-table-column>
+        <el-table-column
+          prop="destinationType"
+          label="去处类型"
+        ></el-table-column>
+        <el-table-column prop="requestTheme" label="请求主题"></el-table-column>
+        <el-table-column prop="highestPrice" label="最高单价"></el-table-column>
+        <el-table-column
+          prop="requestEndDate"
+          label="结束日期"
+        ></el-table-column>
+        <!-- <el-table-column prop="createTime" label="创建时间"></el-table-column>
+        <el-table-column prop="modifyTime" label="修改时间"></el-table-column> -->
+      </el-table>
     </el-col>
   </el-row>
 </template>
@@ -31,14 +45,15 @@ import { getData } from "@/api";
 import { mapState } from 'vuex';
 import * as echarts from "echarts";
 import provincesData from '@/assets/city.json';
-
+import { getAllUser, getRequestAll} from "@/api";
 
 export default {
   data() {
     return {
       userinfo: {},
       selectedLocation: [],
-      options: provincesData
+      options: provincesData,
+      displayedData:[]  
     }
   },
   computed: {
@@ -50,8 +65,10 @@ export default {
     
   },
   created() {
-    console.log(this.user);
     this.userinfo = {...this.user};
+    getRequestAll().then(res => {
+      this.displayedData = res.data.slice(0, 10);
+    })
   },
 }
 </script>
