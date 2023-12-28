@@ -118,105 +118,67 @@
       </el-card>
     </el-dialog>
     <el-dialog
-      title="响应信息"
+      title="发起用户信息"
       :visible="dialogVisible"
       @close="closeResponseDialog"
     >
-      <el-row>
-        <el-col
-          :span="24"
-          v-for="(response, index) in paginatedResponseList"
-          :key="index"
-        >
-          <el-card>
-            <el-form :model="response" label-width="100px">
-              <el-form :model="response" label-width="100px">
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="用户名">
-                      <el-input v-model="response.userName" disabled></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item label="用户级别">
-                      <el-input
-                        v-model="response.userLevel"
-                        disabled
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="用户类型">
-                      <el-input v-model="response.userType" disabled></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item label="用户姓名">
-                      <el-input v-model="response.realName" disabled></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
+      <el-form :model="userData" label-width="100px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="用户名">
+              <el-input v-model="userData.userName" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户级别">
+              <el-input v-model="userData.userLevel" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="用户类型">
+              <el-input v-model="userData.userType" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户姓名">
+              <el-input v-model="userData.realName" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="手机号码">
+              <el-input v-model="userData.phoneNumber" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="注册城市">
+              <el-input v-model="userData.registerCity" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20">
+            <el-form-item label="用户简介">
+              <el-input
+                v-model="userData.userIntro"
+                type="textarea"
+                disabled
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
 
-                <el-row>
-                  <el-col :span="12">
-                    <el-form-item label="手机号码">
-                      <el-input
-                        v-model="response.phoneNumber"
-                        disabled
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :span="12">
-                    <el-form-item label="注册城市">
-                      <el-input
-                        v-model="response.registerCity"
-                        disabled
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row>
-                  <el-col :span="20">
-                    <el-form-item label="用户简介">
-                      <el-input
-                        v-model="response.userIntro"
-                        type="textarea"
-                        disabled
-                      ></el-input>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-                <el-row type="flex" justify="center">
-                  <el-col :span="4">
-                    <el-button
-                      type="success"
-                      icon="el-icon-check"
-                      circle
-                      @click="acceptResponse(response)"
-                    ></el-button>
-                  </el-col>
-                  <el-col :span="4">
-                    <el-button
-                      type="danger"
-                      icon="el-icon-close"
-                      circle
-                      @click="rejectResponse(response)"
-                    ></el-button>
-                  </el-col>
-                </el-row>
-              </el-form>
-            </el-form>
-          </el-card>
-        </el-col>
-      </el-row>
+      <!--    
       <el-pagination
         :current-page="currentpage"
         :page-size="perPage"
         :total="responseList.length"
         @current-change="handlePageChange"
-      ></el-pagination>
+      ></el-pagination> -->
     </el-dialog>
   </div>
 </template>
@@ -233,7 +195,7 @@ import {
   getUser,
   getResponseByRequestId,
   getResponderByRequestId,
-  getRequestAll
+  getRequestAll,
 } from "@/api";
 export default {
   data() {
@@ -364,66 +326,37 @@ export default {
       getUser(userId)
         .then((res) => {
           if (res.status === 200) {
-            console.log(res.data[0].realName);
-            return res.data[0].realName;
+            console.log(res);
+            // return res.data[0].realName;
           }
         })
         .catch((error) => {});
     },
-    showResponseDialog() {
-      // getResponderByRequestId(requestId)
-      //   .then((res) => {
-      //     if (res.status === 200) {
-      //       this.responderList = res.data;
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.$message.error(error);
-      //   });
-      // getResponseByRequestId(requestId)
-      //   .then((res) => {
-      //     if (res.status === 200) {
-      //       this.responseList = res.data;
-      //     }
-      //   })
-      //   .catch((error) => {
-      //     this.$message.error(error);
-      //   });
-      // // 合并响应者和响应信息
-      // const mergedArray = this.responseList.map((response) => {
-      //   const user = this.responderList.find(
-      //     (responder) => response.responderId === responder.userId
-      //   );
-      //   return { ...user, ...response };
-      // });
+    showResponseDialog(userId) {
+      // 打开对话框时执行的操作
+      getUser(userId)
+        .then((res) => {
+          console.log(userId);
+          console.log(res);
+          if (res.status === 200) {
+            this.userData = res.data[0];
+            console.log("用户信息", this.userData);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
       this.dialogVisible = true;
     },
     closeResponseDialog() {
       // 关闭对话框时执行的操作
       this.dialogVisible = false;
     },
-    acceptResponse(response) {
-      let requestId = response.requestId;
-      let responseId = response.responserId;
 
-      console.log("接受响应", response);
-      this.responseList.forEach((item) => {
-        if (item !== response) {
-          this.rejectResponse(item);
-        }
-      });
-    },
-    rejectResponse(response) {
-      let requestId = response.requestId;
-      let responseId = response.responserId;
-      
-      console.log("拒绝响应", response);
-    },
     checkResponse(row) {
-      this.showResponseDialog(row.requestId);
+      this.showResponseDialog(row.userId);
     },
     handlePageChange(newPage) {
-      // 当用户切换分页时触发的方法
       this.currentpage = newPage;
     },
     searchByName(value) {

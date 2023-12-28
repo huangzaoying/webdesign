@@ -366,45 +366,51 @@ export default {
       this.dialogVisible = false;
     },
     acceptResponse(response) {
-      console.log("接受响应", response);
-      let sendData1 = {
-        userId: response.userId,
-        requestId: response.requestId,
-        status: "DONE",
-      };
-      let sendData2 = {
-        requestId: response.requestId,
-        responderId: response.responderId,
-        status: 1,
-      };
-      console.log(sendData1, response.requestId);
-      console.log(sendData2, response.responserId);
-      updateRequest(response.requestId, sendData1)
-        .then((res) => {
-          if (res.status === 200) {
-            this.$message.success(res.statusText);
+      this.$confirm("确认接受响应吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        console.log("接受响应", response);
+        let sendData1 = {
+          userId: response.userId,
+          requestId: response.requestId,
+          status: "DONE",
+        };
+        let sendData2 = {
+          requestId: response.requestId,
+          responderId: response.responderId,
+          status: 1,
+        };
+        console.log(sendData1, response.requestId);
+        console.log(sendData2, response.responserId);
+        updateRequest(response.requestId, sendData1)
+          .then((res) => {
+            if (res.status === 200) {
+              this.$message.success(res.statusText);
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error);
+          });
+        updateResponse(response.responseId, sendData2)
+          .then((res) => {
+            if (res.status === 200) {
+              this.$message.success(res.statusText);
+            }
+          })
+          .catch((error) => {
+            this.$message.error(error);
+          });
+
+        this.responseList.forEach((item) => {
+          if (item !== response) {
+            this.rejectResponse(item);
           }
-        })
-        .catch((error) => {
-          this.$message.error(error);
         });
-      updateResponse(response.responseId, sendData2)
-        .then((res) => {
-          if (res.status === 200) {
-            this.$message.success(res.statusText);
-          }
-        })
-        .catch((error) => {
-          this.$message.error(error);
-        });
-      
-      this.responseList.forEach((item) => {
-        if (item !== response) {
-          this.rejectResponse(item);
-        }
+        this.responseList = [];
+        this.getMyResquest();
       });
-      this.responseList = [];
-      this.getMyResquest();
     },
     rejectResponse(response) {
       // let requestId = response.requestId;
@@ -442,7 +448,6 @@ export default {
       this.showResponseDialog(row.requestId);
     },
     handlePageChange(newPage) {
-      // 当用户切换分页时触发的方法
       this.currentpage = newPage;
     },
     searchByName(value) {

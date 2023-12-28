@@ -118,8 +118,8 @@ export default {
     // 获取列表的数据
     getList() {
       getAllUser().then(({ data }) => {
-        console.log(typeof data);
         this.userList = [...data];
+        this.userList = this.userList.filter(user => user.userName !== 'admin');
         this.total = this.userList.length || 0;
       });
     },

@@ -22,7 +22,7 @@
             filterable
             :clearable="true"
             @clear="getRequestsBycity"
-            @change="searchByType(value)"            
+            @change="searchByType(value)"
           >
             <el-option
               v-for="item in options"
@@ -132,18 +132,23 @@
             type="textarea"
           ></el-input>
         </el-form-item>
-        <el-upload
-          class="upload-demo"
-          drag
-          action=""
-          multiple
-        >
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div class="el-upload__tip" slot="tip">
-            只能上传jpg/png文件，且不超过500kb
-          </div>
-        </el-upload>
+        <!-- 图片介绍 -->
+        <el-form-item label="图片介绍">
+          <input
+            type="file"
+            ref="fileInput"
+            style="display: none"
+            @change="handleFileChange"
+          />
+          <el-button type="primary" size="mini" @click="openFileInput"
+            >选择文件</el-button
+          >
+          <ul>
+            <li v-for="file in uploadedFiles" :key="file.name">
+              {{ file.name }}
+            </li>
+          </ul>
+        </el-form-item>
         <el-form-item>
           <span> </span>
         </el-form-item>
@@ -158,10 +163,18 @@
   <script>
 import moment from "moment";
 import { mapState } from "vuex";
-import { getRequest, getRequestsByCity, getRequestByType, getRequestByName, addResponse} from "@/api";
+import {
+  getRequest,
+  getRequestsByCity,
+  getRequestByType,
+  getRequestByName,
+  addResponse,
+} from "@/api";
 export default {
   data() {
     return {
+      uploadedFiles: [],
+      uploadedImageNames: [],
       list: [],
       response: {
         requestId: null,
@@ -236,6 +249,16 @@ export default {
     this.list = [...this.go.requests];
   },
   methods: {
+    openFileInput() {
+      this.$refs.fileInput.click();
+    },
+    handleFileChange(event) {
+      const file = event.target.files[0];
+      this.uploadedFiles.push(file);
+      this.uploadedImageNames.push(file.name); // 将文件名添加到数组中
+      console.log("已选择的文件:", file);
+      console.log("已选择的文件名:", file.name);
+    },
     getRequestsBycity() {
       getRequestsByCity(this.$store.state.user.registerCity)
         .then((res) => {
@@ -249,7 +272,7 @@ export default {
           this.$message.error(error);
         });
     },
-    searchByName(value){
+    searchByName(value) {
       getRequestByName(value)
         .then((res) => {
           console.log(res);
@@ -295,7 +318,7 @@ export default {
     submitResponse() {
       this.response.responderId = this.$store.state.user.userId;
       this.response.status = 0;
-      this.response.responseImage = "";
+      this.response.responseImage = this.uploadedImageNames.join(",");
       console.log(this.response);
       addResponse(this.response)
         .then((res) => {

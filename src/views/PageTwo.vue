@@ -285,7 +285,6 @@ export default {
       ],
       value: "全部",
       dialogVisible: false,
-
       requestData: {
         userId: 123,
         destinationType: "TypeB",
@@ -403,6 +402,11 @@ export default {
       this.dialogTableVisible = true;
     },
     submitEditForm() {
+      console.log(this.editRequestData);
+      if(this.editRequestData.status === "DONE") {
+        this.$message.error("已完成的请求不可修改");
+        return;
+      }
       this.$refs.editRequestDataForm.validate((valid) => {
         if (valid) {
           const id = this.editRequestData.requestId;
@@ -410,6 +414,7 @@ export default {
             this.editRequestData.requestEndDate
           ).format("YYYY-MM-DD HH:mm:ss");
           delete this.editRequestData.requestId;
+          delete this.editRequestData.status;
           this.editRequestData.destinationImage =
             this.uploadedImageNames.join(",");
           this.uploadedFiles = [];
@@ -438,6 +443,7 @@ export default {
       this.editRequestData.requestDescription = row.requestDescription;
       this.editRequestData.highestPrice = row.highestPrice;
       this.editRequestData.requestEndDate = row.requestEndDate;
+      this.editRequestData.status = row.status;
       this.editDialogVisible = true;
     },
     // TODO: 实现删除功能
@@ -466,6 +472,7 @@ export default {
     },
     // TODO: 实现增加功能
     submitForm() {
+      console.log(this.requestData);
       this.$refs.requestDataForm.validate((valid) => {
         if (valid) {
           this.requestData.userId = this.$store.state.user.userId;

@@ -21,7 +21,8 @@
             v-model="value"
             filterable
             :clearable="true"
-            @change="sort($event)"
+            @clear="getMyResponse"
+            @change="searchByType(value)"
           >
             <el-option
               v-for="item in options"
@@ -50,13 +51,19 @@
         <el-table-column prop="status" label="状态" align="center">
           <template slot-scope="scope">
             <div style="font-size: 20px">
-              <el-icon v-if="scope.row.status === 1" name="check"></el-icon>
-              <el-icon v-else-if="scope.row.status === 2" name="time"></el-icon>
               <el-icon
-                v-else-if="scope.row.status === 3"
+                v-if="scope.row.status === 0"
+                name="question"
+              ></el-icon>
+              <el-icon
+                v-else-if="scope.row.status === 1"
+                name="check"
+              ></el-icon>
+              <el-icon
+                v-else-if="scope.row.status === 2"
                 name="close"
               ></el-icon>
-              <el-icon v-else name="warning"></el-icon>
+              <el-icon v-else name="circle-close"></el-icon>
             </div>
           </template>
         </el-table-column>
@@ -123,7 +130,6 @@
     >
       <el-form
         :model="editRespondData"
-        :rules="formRules"
         ref="editRespondDataForm"
       >
         <el-form-item label="响应描述" prop="requestDescription">
@@ -160,8 +166,9 @@ import { getResponse, updateResponse, deleteResponse } from "@/api";
 export default {
   data() {
     return {
-      responseId : null,
+      responseId: null,
       uploadedFiles: [],
+      uploadedImageNames: [],
       editDialogVisible: false,
       editRespondData: {
         responseDescription: "",
@@ -178,37 +185,20 @@ export default {
       },
       options: [
         {
-          value: "1",
-          label: "全部",
+          value: 0,
+          label: "待接受",
         },
         {
-          value: "2",
-          label: "未接受",
+          value: 2,
+          label: "已拒绝",
         },
         {
-          value: "3",
+          value: 1,
           label: "已接受",
         },
       ],
-      value: "1",
+      value: null,
       dialogVisible: false,
-      requestData: {
-        userId: "",
-        destinationType: "",
-        theme: "",
-        description: "",
-      },
-      formRules: {
-        userId: [
-          { required: true, message: "发布用户标识不能为空", trigger: "blur" },
-        ],
-        destinationType: [
-          { required: true, message: "去处类型不能为空", trigger: "blur" },
-        ],
-        theme: [
-          { required: true, message: "请求主题名称不能为空", trigger: "blur" },
-        ],
-      },
     };
   },
   computed: {
@@ -230,35 +220,16 @@ export default {
     // this.list = [...this.come.requests];
   },
   methods: {
+    searchByType(value) {
+      this.list = this.list.filter((item) => item.status === value);
+    },
     openFileInput() {
       this.$refs.fileInput.click();
     },
     handleFileChange(event) {
       const file = event.target.files[0];
-      const formData = new FormData();
-      formData.append("file", file);
       this.uploadedFiles.push(file);
-      axios
-        .post("/api/requests/upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log("上传成功，返回信息：", response);
-          let base64Image = btoa(
-            new Uint8Array(response.data).reduce(
-              (data, byte) => data + String.fromCharCode(byte),
-              ""
-            )
-          );
-          this.requestData.destinationImage =
-            "data:image/jpeg;base64," + base64Image;
-          // this.requestData.destinationImage = response.data;
-        })
-        .catch((error) => {
-          console.error("上传失败，错误信息：", error);
-        });
+      this.uploadedImageNames.push(file.name); // 将文件名添加到数组中
       console.log("已选择的文件:", file);
       console.log("已选择的文件名:", file.name);
     },
@@ -271,8 +242,14 @@ export default {
       });
     },
     submitEditForm() {
+      if(this.editRespondData.status === 1) {
+        this.$message.error("已完成的响应不可修改");
+        return;
+      }
       this.$refs.editRespondDataForm.validate((valid) => {
         if (valid) {
+          this.editRespondData.responseImage =
+            this.uploadedImageNames.join(",");
           console.log(this.responseId, this.editRespondData);
           updateResponse(this.responseId, this.editRespondData).then((res) => {
             console.log(res);
@@ -300,12 +277,16 @@ export default {
       this.editRespondData.responseDescription = row.responseDescription;
       this.editRespondData.requestId = row.requestId;
       this.editRespondData.responderId = row.responderId;
+      if(row.status === 1) {
+        this.$message.error("已完成的响应不可修改");
+        return;
+      }
       this.editRespondData.status = 0;
       this.editDialogVisible = true;
     },
     // TODO:实现删除功能
     deleteRespond(row) {
-      console.log("删除的",row);
+      console.log("删除的", row);
       this.$confirm("确定要删除吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",

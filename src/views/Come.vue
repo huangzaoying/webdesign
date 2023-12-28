@@ -49,7 +49,7 @@
         <el-table-column prop="modifyTime" label="修改时间"></el-table-column>
         <el-table-column prop="status" label="状态" align="center">
           <template slot-scope="scope">
-            <div style="font-size: 20px">
+            <div style="font-size: 20px" @click="checkResponse(scope.row)">
               <el-icon v-if="scope.row.status === 1" name="check"></el-icon>
               <el-icon v-else-if="scope.row.status === 2" name="time"></el-icon>
               <el-icon
@@ -151,15 +151,91 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog
+      title="发起用户信息"
+      :visible="dialogVisible"
+      @close="closeResponseDialog"
+    >
+      <el-form :model="userData" label-width="100px">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="用户名">
+              <el-input v-model="userData.userName" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户级别">
+              <el-input v-model="userData.userLevel" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="用户类型">
+              <el-input v-model="userData.userType" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="用户姓名">
+              <el-input v-model="userData.realName" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="手机号码">
+              <el-input v-model="userData.phoneNumber" disabled></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="注册城市">
+              <el-input v-model="userData.registerCity" disabled></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="20">
+            <el-form-item label="用户简介">
+              <el-input
+                v-model="userData.userIntro"
+                type="textarea"
+                disabled
+              ></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+
+      <!--    
+      <el-pagination
+        :current-page="currentpage"
+        :page-size="perPage"
+        :total="responseList.length"
+        @current-change="handlePageChange"
+      ></el-pagination> -->
+    </el-dialog>
   </div>
 </template>
   
   <script>
 import { mapState } from "vuex";
-import { getAllResponse, updateResponse, deleteResponse } from "@/api";
+// import {
+//   addRequest,
+//   getRequest,
+//   updateRequest,
+//   deleteRequest,
+//   getRequestByType,
+//   getRequestByName,
+//   getUser,
+//   getResponseByRequestId,
+//   getResponderByRequestId,
+//   getRequestAll,
+// } from "@/api";
+import { getAllResponse, updateResponse, deleteResponse, getUser} from "@/api";
 export default {
   data() {
     return {
+      userData: {}, // 保存用户信息的对象
       responseId : null,
       uploadedFiles: [],
       editDialogVisible: false,
@@ -226,10 +302,32 @@ export default {
   },
   created() {
     this.getAllResponse();
-    // console.log(this.come.requests)
-    // this.list = [...this.come.requests];
   },
   methods: {
+    closeResponseDialog() {
+      // 关闭对话框时执行的操作
+      this.dialogVisible = false;
+    },
+    showResponseDialog(userId) {
+      // 打开对话框时执行的操作
+      getUser(userId)
+        .then((res) => {
+          console.log(userId);
+          console.log(res);
+          if (res.status === 200) {
+            this.userData = res.data[0];
+            console.log("用户信息", this.userData);
+          }
+        })
+        .catch((error) => {
+          this.$message.error(error);
+        });
+      this.dialogVisible = true;
+    },
+    checkResponse(row) {
+      // console.log(row);
+      this.showResponseDialog(row.responderId);
+    },
     openFileInput() {
       this.$refs.fileInput.click();
     },

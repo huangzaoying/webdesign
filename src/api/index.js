@@ -77,14 +77,11 @@ export const deleteResponse = (id) => {
 export const getAllResponse = () => {
     return http.get('/responses/getAll')
 }
-// export const getResponseByRequestId = (requestId) => {
-//     return http.get('/responses/getResponse/' + requestId)
-// }
-// export const getResponderByRequestId = (requestId) => {
-//     return http.get('/responses/getResponder/' + requestId)
-// }
-// 分析的接口
 
 export const getAnalysis = (data) => {
     return http.get('/analysis/getAnalysis', qs.stringify(data))
+}
+
+export const getSummery = (data) => {    
+    return http.get('summary/get?startMonth=' + data.startMonth + '&endMonth=' + data.endMonth + '&region=' + data.region)
 }

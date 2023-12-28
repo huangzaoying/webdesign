@@ -162,26 +162,27 @@ export default {
             username: this.form.userName,
             password: this.form.password,
           };
-          login(sendData).then((respond) => {
-            if (true || respond.status === 200) {
-              Cookie.set("token", respond.status); // token信息存入cookie用于不同页面间的通信
-              this.$store.commit(
-                "setMenu",
-                this.form.userName === "admin" ? admin : menu
-              ); // 获取菜单的数据，存入store中
-              // this.$store.commit("setUser", respond.data);
-              this.$store.commit("addMenu", this.$router);
-              this.$message.success("登录成功!");
-              if (this.form.userName === "admin")
-                this.$router.push("/admin/user");
-              else this.$router.push("/home");
-            } else {
-              this.$message.error("登陆失败");
-            }
-          })
-          .catch(error => {
-            this.$message.error(error);
-          });
+          login(sendData)
+            .then((respond) => {
+              if (respond.status === 200) {
+                Cookie.set("token", respond.status); // token信息存入cookie用于不同页面间的通信
+                this.$store.commit(
+                  "setMenu",
+                  this.form.userName === "admin" ? admin : menu
+                ); // 获取菜单的数据，存入store中
+                this.$store.commit("setUser", respond.data);
+                this.$store.commit("addMenu", this.$router);
+                this.$message.success("登录成功!");
+                if (this.form.userName === "admin")
+                  this.$router.push("/admin/user");
+                else this.$router.push("/home");
+              } else {
+                this.$message.error("登陆失败");
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error);
+            });
         }
       });
     },
@@ -196,14 +197,16 @@ export default {
           userLevel: "NORMAL",
         };
         if (valid) {
-          register(sendData).then((data) => {
-            if (data.status === 200) {
-              this.$message.success(data.data);
-            }
-          })
-          .catch(error => {
-            this.$message.error(error);
-          });
+          register(sendData)
+            .then((data) => {
+              if (data.status === 200) {
+                this.$message.success(data.data);
+                this.dialogVisible = false;
+              }
+            })
+            .catch((error) => {
+              this.$message.error(error);
+            });
         }
       });
     },
@@ -212,9 +215,6 @@ export default {
     setInterval(() => {
       this.currentTime = new Date().toLocaleString();
     }, 1000);
-  },
-  destroyed() {
-    // this.$store.commit("addRequest", go);
   },
 };
 </script>
