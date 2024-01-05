@@ -287,11 +287,11 @@ export default {
       dialogVisible: false,
       requestData: {
         userId: 123,
-        destinationType: "TypeB",
-        requestTheme: "Theme Fish",
-        requestDescription: "Description Example",
+        destinationType: "僻静休闲",
+        requestTheme: "旅游",
+        requestDescription: "Like this place",
         destinationImage: "",
-        highestPrice: 120.5,
+        highestPrice: 123,
         requestEndDate: null,
       },
       formRules: {
@@ -397,13 +397,17 @@ export default {
     },
 
     showDetails(row) {
-      this.selectedRowDetails.describe = row.description;
-      this.selectedRowDetails.images = row.introImages || [];
+      this.selectedRowDetails.describe = row.requestDescription;
+      if (row.destinationImage === "") {
+        this.selectedRowDetails.images = ["user-default.png"]; 
+      } else {
+        this.selectedRowDetails.images = row.destinationImage.split(",");
+      }
       this.dialogTableVisible = true;
     },
     submitEditForm() {
       console.log(this.editRequestData);
-      if(this.editRequestData.status === "DONE") {
+      if (this.editRequestData.status === "DONE") {
         this.$message.error("已完成的请求不可修改");
         return;
       }
@@ -476,9 +480,14 @@ export default {
       this.$refs.requestDataForm.validate((valid) => {
         if (valid) {
           this.requestData.userId = this.$store.state.user.userId;
-          this.requestData.requestEndDate = moment(
-            this.requestData.requestEndDate
-          ).format("YYYY-MM-DD HH:mm:ss");
+          console.log(this.requestData.requestEndDate);
+          if (moment(this.requestData.requestEndDate).isValid()) {
+            this.requestData.requestEndDate = moment(
+              this.requestData.requestEndDate
+            ).format("YYYY-MM-DD HH:mm:ss");
+          } else {
+            console.log("Invalid date");
+          }
           this.requestData.destinationImage = this.uploadedImageNames.join(",");
           this.uploadedFiles = [];
           this.uploadedImageNames = [];
@@ -488,13 +497,13 @@ export default {
             .then((data) => {
               if (data.status === 200) {
                 this.$message.success(data.data);
+                this.getMyResquest();
               }
             })
             .catch((error) => {
               this.$message.error(error);
             });
           console.log("Form submitted successfully:", this.requestData);
-          this.getMyResquest();
           this.$refs.requestDataForm.resetFields();
           this.dialogVisible = false;
         } else {
